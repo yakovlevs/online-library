@@ -10,21 +10,22 @@
             <div class="panel panel-default large-book-card">
                 <div class="panel-heading">
                     <h5><b class="hide-title-overflow"> ${book.getTitle()} </b></h5>
-                    <i class="hide-title-overflow">
+                    <p class="hide-title-overflow">
                         <#if book.getSubtitle()??>
                             ${book.getSubtitle()}&zwnj;
                         <#else>
-                            &zwnj; <#--invisible placeholder (zero width non-joiner)-->
+                            &zwnj; &zwnj;<#--invisible placeholder (zero width non-joiner)-->
                         </#if>
-                    </i>
+                    </p>
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-12 col-sm-3 col-xs-3">
+                        <#if book.getThumbnailUrl()??>
                             <img class="book-thumbnail img-rounded center-block" src="${book.getThumbnailUrl()}">
-                        </div>
-                        <p></p>
-                        <div class="col-md-12 col-sm-9 col-xs-9">
+                        </#if>
+                    </div>
+                    <div class="row">
+                        <div class="container-fluid">
                             <#if book.getWebReaderLink()??>
                                 <p>
                                     <a class="btn-web-reader btn btn-primary center-block" role="button"
@@ -32,7 +33,7 @@
                                 </p>
                             </#if>
                             <#if book.getAuthors()??>
-                                <p class="hide-description-overflow"><span class="text-primary">
+                                <p class="hide-title-overflow"><span class="text-primary">
                                     <#if book.getAuthors()?size gt 1>
                                         Authors:
                                     <#else>
@@ -47,7 +48,7 @@
                                 <p><span class="text-primary">Author:</span> ...</p>
                             </#if>
                             <#if book.getCategories()??>
-                                <p class="hide-description-overflow"><span class="text-primary">
+                                <p class="hide-title-overflow"><span class="text-primary">
                                     <#if book.getCategories()?size gt 1>
                                         Categories:
                                     <#else>
@@ -59,19 +60,19 @@
                                     </#list>
                                 </p>
                             <#else>
-                                <p><span class="text-primary">Category:</span> ...</p>
+                                <p><span class="text-primary hide-title-overflow">Category:</span> ...</p>
                             </#if>
                             <#if book.getPublisher()??>
-                                <p class="hide-description-overflow"><span
+                                <p class="hide-description-overflow hide-title-overflow"><span
                                         class="text-primary">Publisher:</span> ${book.getPublisher()}</p>
                             <#else>
                                 <p><span class="text-primary">Publisher:</span> ...</p>
                             </#if>
                             <#if book.getPublishedDate()??>
-                                <p class="hide-description-overflow"><span
+                                <p class="hide-description-overflow hide-title-overflow"><span
                                         class="text-primary">Published date:</span> ${book.getPublishedDate()}</p>
                             <#else>
-                                <p><span class="text-primary">Published date:</span> ...</p>
+                                <p><span class="text-primary hide-title-overflow">Published date:</span> ...</p>
                             </#if>
                             <#if book.getPageCount()??>
                                 <p class="hide-description-overflow"><span
@@ -80,23 +81,23 @@
                                 <p><span class="text-primary">Page count:</span> ...</p>
                             </#if>
                             <#if book.getAverageRating()??>
-                                <p class="hide-description-overflow"><span
+                                <p class="hide-title-overflow"><span
                                         class="text-primary">Rating:</span> ${book.getAverageRating()}</p>
                             <#else>
                                 <p><span class="text-primary">Rating:</span> ...</p>
                             </#if>
                             <#if book.getLanguage()??>
-                                <p class="hide-description-overflow"><span
+                                <p class="hide-title-overflow"><span
                                         class="text-primary">Language:</span> ${book.getLanguage()}</p>
                             <#else>
                                 <p><span class="text-primary">Language:</span> ...</p>
                             </#if>
                             <#if book.getSaleability()??>
                                 <#if book.getSaleability()>
-                                    <p class="hide-description-overflow"><span
+                                    <p class="hide-title-overflow"><span
                                             class="text-primary">Non for sale</span></p>
                                 <#else>
-                                    <p class="hide-description-overflow"><span
+                                    <p class="hide-title-overflow"><span
                                             class="text-primary">For sale</span></p>
                                 </#if>
                             <#else>

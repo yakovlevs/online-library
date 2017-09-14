@@ -1,28 +1,31 @@
 body {
     /*padding-top: 80px;*/
-    background-color: #fdfdfd;
-
-    min-width: 650px; /* suppose you want minimun width of 1000px */
-    width: auto !important; /* Firefox will set width as auto */
-    width: 650px; /* As IE ignores !important it will set width as 1000px; */
+    /*background-color: #fdfdfd;*/
+    font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
+/*    min-width: 650px; !* suppose you want minimun width of 1000px *!
+    width: auto !important; !* Firefox will set width as auto *!
+    width: 650px; !* As IE ignores !important it will set width as 1000px; *!*/
 
 }
 
 #content {
-    padding-top: 10px;
+    /*padding-top: 10px;*/
 }
-
+.navbar {
+    margin-bottom: 0px !important;
+}
 .book-thumbnail {
     /*    max-height: 215px;
         height: auto;
         max-width: 143px;
         width: 100%;*/
+    margin-bottom: 10px;
     height: 215px;
     display: block;
 }
 
 .btn-web-reader {
-    margin-top: 10px;
+    /*margin-top: 10px;*/
     /*width: 170px;*/
 }
 
@@ -31,12 +34,14 @@ body {
     word-wrap: break-word;
     text-overflow: ellipsis;
     display: -webkit-box;
-    line-height: 18px; /*fallback*/
+    line-height: 16px; /*fallback*/
     max-height: 51px; /*fallback*/
     -webkit-line-clamp: 3; /* number of lines to show */
     -webkit-box-orient: vertical;
 }
-
+p{
+    line-height: 16px; /*fallback*/
+}
 .hide-title-overflow {
     overflow: hidden;
     white-space: nowrap;
@@ -46,11 +51,11 @@ body {
 }
 
 .small-book-card {
-    height: 500px;
+    height: 650px;
 }
 
 .large-book-card {
-    height: 700px;
+    height: 650px;
 }
 #navbar-input-group{
     width: 100%;

@@ -17,7 +17,7 @@
         col-md-6 col-md-offset-3
         col-lg-6 col-lg-offset-3
         ">
-            <div class="panel panel-default" style="margin-top: 45px">
+            <div class="panel panel-primary" style="margin-top: 45px">
                 <div class="panel-heading">
                     <h3 class="panel-title">Login with Username and Password</h3>
                 </div>
@@ -30,7 +30,7 @@
                 </#if>
                     <form method="post">
                         <div class="form-group">
-                            <label for="username">Username</label>
+                            <label for="username"><p>Username</p></label>
                             <input type="text" class="form-control" id="username" placeholder="Username"
                                    name="username">
                         </div>
@@ -39,7 +39,7 @@
                             <input type="password" class="form-control" id="password" placeholder="Password"
                                    name="password">
                         </div>
-                        <button type="submit" class="btn btn-default">Log in</button>
+                        <button type="submit" class="btn btn-primary">Log in</button>
                         <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}">
                     </form>
                 </div>

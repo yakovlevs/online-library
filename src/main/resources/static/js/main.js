@@ -8,12 +8,12 @@ $(document).ready(function () {
 
 function ajax_submit() {
     $("#btn-search").prop("disabled", true);
-
+    var q = $("#query").val();
     $.ajax({
         type: "GET",
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         url: "/content",
-        data: "query=" + $("#query").val(),
+        data: "query=" + q,
         dataType: 'html',
         cache: false,
         timeout: 600000,
@@ -21,11 +21,13 @@ function ajax_submit() {
             $('#content').html(data);
             $("#btn-search").prop("disabled", false);
             //console.log("SUCCESS : ", data);
-            resize();
+            console.log("query : ", q);
+            /*resize();*/
         },
         error: function (e) {
             $('#content').html("<h4>Not found</h4>");
             //console.log("ERROR : ", e);
+            console.log("query : ", q);
             $("#btn-search").prop("disabled", false);
 
         }
@@ -37,7 +39,7 @@ function logout() {
 }
 
 
-$(window).resize(function () {
+/*$(window).resize(function () {
     resize();
 });
 
@@ -52,4 +54,4 @@ function resize() {
         $html.find('.panel').removeClass('small-book-card');
         $html.find('.panel').addClass('large-book-card');
     }
-}
+}*/
