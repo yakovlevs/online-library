@@ -1,6 +1,6 @@
 body {
     /*padding-top: 80px;*/
-    background-color: #f2f2f2;
+    background-color: #fdfdfd;
 
     min-width: 650px; /* suppose you want minimun width of 1000px */
     width: auto !important; /* Firefox will set width as auto */
