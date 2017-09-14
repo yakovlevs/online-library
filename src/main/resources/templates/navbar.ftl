@@ -30,7 +30,7 @@
         </ul>
         <div class="col-sm-3 col-md-3">
             <form id="search-form" class="navbar-form" role="search">
-                <div class="input-group">
+                <div id="navbar-input-group" class="input-group">
                     <input type="text" class="form-control" placeholder="Search" id="query"
                            name="query">
                     <div class="input-group-btn">

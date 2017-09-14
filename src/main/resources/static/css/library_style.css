@@ -52,6 +52,9 @@ body {
 .large-book-card {
     height: 700px;
 }
+#navbar-input-group{
+    width: 100%;
+}
 
 /*when navbar is horizontal*/
 @media (min-width: 768px) {
