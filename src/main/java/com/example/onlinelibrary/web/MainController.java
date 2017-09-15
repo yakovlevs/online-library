@@ -5,18 +5,14 @@ import com.example.onlinelibrary.domain.Role;
 import com.example.onlinelibrary.domain.User;
 import com.example.onlinelibrary.gbapi.BookDao;
 import lombok.extern.log4j.Log4j;
-import org.apache.catalina.core.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static java.util.stream.Collectors.joining;
@@ -26,11 +22,14 @@ import static java.util.stream.Collectors.joining;
 public class MainController {
     @Autowired
     private BookDao bookDao;
-    private List<Book> lastSearchResult;
-
+    private String lastSearchQuery = "";
+    private int booksOnPage = 20;
     @GetMapping({"/", "home"})
     public String getHome(Model model) {
         model.addAttribute("username", "");
+        model.addAttribute("search", lastSearchQuery);
+        model.addAttribute("booksOnPage", booksOnPage);
+        model.addAttribute("numOfBooks", bookDao.getNumberOfBook());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!authentication.getPrincipal().toString().equals("anonymousUser")) {
             try {
@@ -40,7 +39,7 @@ public class MainController {
                 log.info(ex);
             }
         }
-        model.addAttribute("searchResult", lastSearchResult);
+        model.addAttribute("searchResult", bookDao.findByTitle(lastSearchQuery));
         return "home";
     }
 
@@ -70,14 +69,20 @@ public class MainController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             authentication = null;
             model.addAttribute("username", "");
+            lastSearchQuery = "";
         }
         return "login";
     }
 
     @GetMapping("/content")
-    public String getContent(@RequestParam(value = "query", required = true) String query, Model model) {
+    public String getContent(
+            @RequestParam(value = "query", required = true) String query,
+            /*@RequestParam(value = "count", required = false) String count,*/
+            Model model) {
         List<Book> result = bookDao.findByTitle(query);
-        lastSearchResult = result;
+        model.addAttribute("booksOnPage", booksOnPage);
+        model.addAttribute("numOfBooks", bookDao.getNumberOfBook());
+        lastSearchQuery = query;
         if (result != null) {
             model.addAttribute("searchResult", result);
             //log.info(Arrays.toString(result.toArray()));
