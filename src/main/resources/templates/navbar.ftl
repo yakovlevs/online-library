@@ -34,7 +34,10 @@
                     <input type="text" class="form-control" placeholder="Search" id="query"
                            name="query">
                     <div class="input-group-btn">
-                        <button id="btn-search" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                        <button id="btn-search" class="btn btn-default" type="submit">
+                            <#--<i class="glyphicon glyphicon-search"></i>-->
+                            <span>Search</span>
+                        </button>
                     </div>
                 </div>
             </form>

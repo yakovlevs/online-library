@@ -5,6 +5,7 @@ import com.example.onlinelibrary.domain.Role;
 import com.example.onlinelibrary.domain.User;
 import com.example.onlinelibrary.gbapi.BookDao;
 import lombok.extern.log4j.Log4j;
+import org.apache.catalina.core.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +26,7 @@ import static java.util.stream.Collectors.joining;
 public class MainController {
     @Autowired
     private BookDao bookDao;
+    private List<Book> lastSearchResult;
 
     @GetMapping({"/", "home"})
     public String getHome(Model model) {
@@ -38,6 +40,7 @@ public class MainController {
                 log.info(ex);
             }
         }
+        model.addAttribute("searchResult", lastSearchResult);
         return "home";
     }
 
@@ -74,6 +77,7 @@ public class MainController {
     @GetMapping("/content")
     public String getContent(@RequestParam(value = "query", required = true) String query, Model model) {
         List<Book> result = bookDao.findByTitle(query);
+        lastSearchResult = result;
         if (result != null) {
             model.addAttribute("searchResult", result);
             //log.info(Arrays.toString(result.toArray()));
