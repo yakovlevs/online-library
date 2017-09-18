@@ -20,7 +20,7 @@ public class BookApiClientTest {
     @Test
     public void init() throws Exception {
 
-        Volumes volumes = bookApiClient.findByTitle("harry potter");
+        Volumes volumes = bookApiClient.findByTitle("harry potter", 0L);
         if (volumes != null) {
             for (Volume volume : volumes.getItems()) {
                 Volume.VolumeInfo volumeInfo = volume.getVolumeInfo();
@@ -31,7 +31,7 @@ public class BookApiClientTest {
             }
         }
 
-        bookDao.findByTitle("harry potter").forEach(book -> System.out.println(book.getTitle()));
+        bookDao.findByTitle("harry potter",0L).forEach(book -> System.out.println(book.getTitle()));
     }
 
 }

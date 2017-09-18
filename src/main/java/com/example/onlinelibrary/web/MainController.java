@@ -24,6 +24,8 @@ public class MainController {
     private BookDao bookDao;
     private String lastSearchQuery = "";
     private int booksOnPage = 20;
+    private long currentPage = 0L;
+
     @GetMapping({"/", "home"})
     public String getHome(Model model) {
         model.addAttribute("username", "");
@@ -39,7 +41,7 @@ public class MainController {
                 log.info(ex);
             }
         }
-        model.addAttribute("searchResult", bookDao.findByTitle(lastSearchQuery));
+        model.addAttribute("searchResult", bookDao.findByTitle(lastSearchQuery, currentPage));
         return "home";
     }
 
@@ -77,15 +79,20 @@ public class MainController {
     @GetMapping("/content")
     public String getContent(
             @RequestParam(value = "query", required = true) String query,
+            @RequestParam(value = "page", required = false) String page,
             /*@RequestParam(value = "count", required = false) String count,*/
             Model model) {
-        List<Book> result = bookDao.findByTitle(query);
+        if (page != null) {
+            currentPage = Long.parseLong(page);
+        }
+        List<Book> result = bookDao.findByTitle(query, currentPage);
         model.addAttribute("booksOnPage", booksOnPage);
         model.addAttribute("numOfBooks", bookDao.getNumberOfBook());
         lastSearchQuery = query;
         if (result != null) {
             model.addAttribute("searchResult", result);
-            //log.info(Arrays.toString(result.toArray()));
+            log.info("user request: " + query +
+                    " page: " + page);
         }
         return "content";
     }

@@ -25,10 +25,11 @@ public class BookDao {
     private int numOfBook;
 
     @Cacheable("books")
-    public List<Book> findByTitle(String title) {
-        Volumes volumes = bookApiClient.findByTitle(title);
-        numOfBook = volumes.getTotalItems();
+    public List<Book> findByTitle(String title, Long page) {
+        Volumes volumes = bookApiClient.findByTitle(title, page);
+
         if (volumes != null) {
+            numOfBook = volumes.getTotalItems();
             return volumes.getItems().stream().map(volume -> Book.builder()
                     .title(
                             Optional.ofNullable(volume.getVolumeInfo().getTitle()).orElse("..."))

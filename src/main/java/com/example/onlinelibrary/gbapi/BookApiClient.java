@@ -36,13 +36,14 @@ public class BookApiClient {
         }
     }
 
-    private Volumes searchByQuery(@NonNull String query) {
+    private Volumes searchByQuery(@NonNull String query, @NonNull Long page) {
         Volumes volumes = null;
         try {
             // Set query string and filters.
             Books.Volumes.List volumesList = books.volumes().list(query);
             volumesList.setFilter("ebooks");
             volumesList.setMaxResults(20L);
+            volumesList.setStartIndex(volumesList.getMaxResults() * page);
 
             // Execute the query.
             volumes = volumesList.execute();
@@ -55,7 +56,7 @@ public class BookApiClient {
         return volumes;
     }
 
-    public Volumes findByTitle(@NonNull String query) {
-        return searchByQuery("intitle:" + query);
+    public Volumes findByTitle(@NonNull String query, @NonNull Long page) {
+        return searchByQuery("intitle:" + query, page);
     }
 }

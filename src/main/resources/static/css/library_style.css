@@ -2,18 +2,20 @@ body {
     /*padding-top: 80px;*/
     /*background-color: #fdfdfd;*/
     font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
-/*    min-width: 650px; !* suppose you want minimun width of 1000px *!
-    width: auto !important; !* Firefox will set width as auto *!
-    width: 650px; !* As IE ignores !important it will set width as 1000px; *!*/
+    /*    min-width: 650px; !* suppose you want minimun width of 1000px *!
+        width: auto !important; !* Firefox will set width as auto *!
+        width: 650px; !* As IE ignores !important it will set width as 1000px; *!*/
 
 }
 
 #content {
     /*padding-top: 10px;*/
 }
+
 .navbar {
     margin-bottom: 0px !important;
 }
+
 .book-thumbnail {
     /*    max-height: 215px;
         height: auto;
@@ -39,9 +41,11 @@ body {
     -webkit-line-clamp: 3; /* number of lines to show */
     -webkit-box-orient: vertical;
 }
-p{
+
+p {
     line-height: 16px; /*fallback*/
 }
+
 .hide-title-overflow {
     overflow: hidden;
     white-space: nowrap;
@@ -50,35 +54,31 @@ p{
     display: block;
 }
 
-.small-book-card {
-    height: 650px;
+#paginator {
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
-.large-book-card {
-    height: 650px;
-}
-#navbar-input-group{
+#navbar-input-group {
     width: 100%;
 }
 
 /*when navbar is horizontal*/
 @media (min-width: 768px) {
-        .menu-search-text-input {
-            display: inline-block !important;
-            width: 50%;
-        }
-
-
+    .menu-search-text-input {
+        display: inline-block !important;
+        width: 50%;
+    }
 }
 
 /*when navbar is vertical*/
 @media (max-width: 768px) {
-        .menu-search-text-input {
-            display: inline-block !important;
-            width: 75%;
-        }
+    .menu-search-text-input {
+        display: inline-block !important;
+        width: 75%;
+    }
 
-        .menu-search-btn {
-            width: 24%;
-        }
+    .menu-search-btn {
+        width: 24%;
+    }
 }

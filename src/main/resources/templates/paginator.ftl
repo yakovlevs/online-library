@@ -1,48 +1,31 @@
-<div class="
+<div id="paginator" class="
 col-xs-12
 col-sm-12
 col-md-12
 col-lg-12
 ">
 <#if numOfBooks?? && (numOfBooks gt 0)>
-    <#assign pages =(numOfBooks/booksOnPage)?ceiling> <#--ceiling: Rounds the number upwards (i.e., towards positive infinity)-->
-<#--<p>${pages}</p>--> <p>Founded ${numOfBooks}</p>
-    <#--<nav aria-label="...">-->
-        <#--<ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" href="#" tabindex="-1">Previous</a>
-            </li>
-
-        &lt;#&ndash;<li class="page-item"><a class="page-link" href="#">${page}</a></li>&ndash;&gt;
-            <li class="page-item">
-                <a href="#" class="page-link dropdown-toggle" data-toggle="dropdown">Page <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                    <#list 1..pages as page>
-                        <li><a href="#">${page}</a></li>
-                    </#list>
-                </ul>
-            </li>
-
-            <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-            </li>
-        </ul>-->
+    <#assign pages =(numOfBooks/booksOnPage)?ceiling>
+    <div class="alert alert-dismissible alert-info" style="width:200px;">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Found books: </strong> ${numOfBooks}
+    </div>
     <div class="btn-group">
-        <a href="#" class="btn btn-default">8</a>
+        <a href="#" class="btn btn-default">Previous</a>
         <div class="btn-group">
-            <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                Dropdown
-                <span class="caret"></span>
+            <a id="page_selector" href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                1 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
                 <#list 1..pages as page>
-                    <li><a href="#">${page}</a></li>
+                    <li><a class="book_page" href="#">${page}</a></li>
                 </#list>
             </ul>
         </div>
-        <a href="#" class="btn btn-default">8</a>
+        <a href="#" class="btn btn-default">Next</a>
     </div>
+<#--<p class="text-primary" style="display: inline-block !important;">Founded ${numOfBooks}</p>-->
 </div>
-    <#--</nav>-->
+<#else>
+<div class="row"></div>
 </#if>
-</div>

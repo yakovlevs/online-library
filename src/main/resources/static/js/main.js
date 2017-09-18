@@ -2,18 +2,27 @@ $(document).ready(function () {
     $("#search-form").submit(function (event) {
         //stop submit the form, we will post it manually.
         event.preventDefault();
-        ajax_submit();
+        ajax_submit(0);
+    });
+
+});
+
+$('.book_page').on('click', function(e) {
+    e.preventDefault();
+    $("#page_selector").text(function(i,v) {
+        return v === 'Show' ? 'Hide' : 'Show';
     });
 });
 
-function ajax_submit() {
+function ajax_submit(page) {
     $("#btn-search").prop("disabled", true);
-    var q = $("#query").val();
+    var q = "query=" + $("#query").val();
+    var p = "page=" + page;
     $.ajax({
         type: "GET",
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         url: "/content",
-        data: "query=" + q,
+        data: q + "&" + p,
         dataType: 'html',
         cache: false,
         timeout: 600000,
