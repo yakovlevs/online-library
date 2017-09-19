@@ -42,6 +42,7 @@ public class MainController {
             }
         }
         model.addAttribute("searchResult", bookDao.findByTitle(lastSearchQuery, currentPage));
+        model.addAttribute("currentPage", currentPage);
         return "home";
     }
 
@@ -94,6 +95,7 @@ public class MainController {
             log.info("user request: " + query +
                     " page: " + page);
         }
+        model.addAttribute("currentPage", currentPage);
         return "content";
     }
 }

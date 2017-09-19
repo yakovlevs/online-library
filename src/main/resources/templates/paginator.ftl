@@ -13,16 +13,25 @@ col-lg-12
     <div class="btn-group">
         <a href="#" class="btn btn-default">Previous</a>
         <div class="btn-group">
-            <a id="page_selector" href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                1 <span class="caret"></span>
+            <a id="page_selector" href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+               aria-expanded="false">
+                <#if currentPage??>
+                    <#assign p = currentPage + 1>
+                ${p}
+                </#if><span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-                <#list 1..pages as page>
+                <#list 1..(pages-1) as page>
                     <li><a class="book_page" href="#">${page}</a></li>
                 </#list>
             </ul>
         </div>
-        <a href="#" class="btn btn-default">Next</a>
+        <#if (currentPage??) && ((currentPage+1) == pages)>
+            <a href="#" class="btn btn-default" disabled="true">Next</a>
+        <#else>
+            <a href="#" class="btn btn-default">Next</a>
+        </#if>
+
     </div>
 <#--<p class="text-primary" style="display: inline-block !important;">Founded ${numOfBooks}</p>-->
 </div>

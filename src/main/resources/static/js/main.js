@@ -1,18 +1,6 @@
-$(document).ready(function () {
-    $("#search-form").submit(function (event) {
-        //stop submit the form, we will post it manually.
-        event.preventDefault();
-        ajax_submit(0);
-    });
-
-});
-
-$('.book_page').on('click', function(e) {
-    e.preventDefault();
-    $("#page_selector").text(function(i,v) {
-        return v === 'Show' ? 'Hide' : 'Show';
-    });
-});
+function logout() {
+    document.getElementById('logout_form').submit();
+}
 
 function ajax_submit(page) {
     $("#btn-search").prop("disabled", true);
@@ -43,9 +31,20 @@ function ajax_submit(page) {
     });
 }
 
-function logout() {
-    document.getElementById('logout_form').submit();
-}
+$(document).ready(function () {
+    console.log("ready!");
+    $("#search-form").submit(function (event) {
+        //stop submit the form, we will post it manually.
+        event.preventDefault();
+        ajax_submit(0);
+    });
+    $(document).on('click', '.book_page', function () {
+        var selected_page = $(this).text();
+        console.log("click ", selected_page);
+        ajax_submit(selected_page - 1); //difference in numeration between user and api
+        /*$('#page_selector').text(selected_page+" ").append("<span class=\"caret\"></span>");*/
+    });
+});
 
 
 /*$(window).resize(function () {
