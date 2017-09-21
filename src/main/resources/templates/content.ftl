@@ -8,7 +8,7 @@
     <#if totalBooks gt 0>
         <#list searchResult as book>
             <div class="col-sm-12 col-md-6 col-lg-3">
-                <div class="panel panel-default large-book-card">
+                <div class="panel panel-default book-card">
                     <div class="panel-heading">
                         <h5><b class="hide-title-overflow"> ${book.getTitle()} </b></h5>
                         <p class="hide-title-overflow">
@@ -21,8 +21,10 @@
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <#if book.getThumbnailUrl()??>
+                            <#if book.getThumbnailUrl()?? && book.getThumbnailUrl() !="...">
                                 <img class="book-thumbnail img-rounded center-block" src="${book.getThumbnailUrl()}">
+                            <#else>
+                                <img class="book-thumbnail img-rounded center-block" src="img/img_placeholder.jpg">
                             </#if>
                         </div>
                         <div class="row">

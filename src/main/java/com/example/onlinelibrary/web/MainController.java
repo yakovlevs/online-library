@@ -25,13 +25,14 @@ public class MainController {
     private String lastSearchQuery = "";
     private int booksOnPage = 20;
     private long currentPage = 0L;
+    private int numOfBooks = 0;
 
     @GetMapping({"/", "home"})
     public String getHome(Model model) {
         model.addAttribute("username", "");
         model.addAttribute("search", lastSearchQuery);
         model.addAttribute("booksOnPage", booksOnPage);
-        model.addAttribute("numOfBooks", bookDao.getNumberOfBook());
+        model.addAttribute("numOfBooks", numOfBooks);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!authentication.getPrincipal().toString().equals("anonymousUser")) {
             try {
@@ -87,8 +88,11 @@ public class MainController {
             currentPage = Long.parseLong(page);
         }
         List<Book> result = bookDao.findByTitle(query, currentPage);
+        if (!lastSearchQuery.equals(query)) {
+            numOfBooks = bookDao.getNumberOfBook();
+        }
         model.addAttribute("booksOnPage", booksOnPage);
-        model.addAttribute("numOfBooks", bookDao.getNumberOfBook());
+        model.addAttribute("numOfBooks", numOfBooks);
         lastSearchQuery = query;
         if (result != null) {
             model.addAttribute("searchResult", result);

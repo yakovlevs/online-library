@@ -6,6 +6,7 @@ col-lg-12
 ">
 <#if numOfBooks?? && (numOfBooks gt 0)>
     <#assign pages =(numOfBooks/booksOnPage)?ceiling>
+    <p>Pages ${pages}</p>
     <div class="alert alert-dismissible alert-info" style="width:200px;">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <strong>Found books: </strong> ${numOfBooks}
@@ -21,7 +22,7 @@ col-lg-12
                 </#if><span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-                <#list 1..(pages-1) as page>
+                <#list 1..pages as page>
                     <li><a class="book_page" href="#">${page}</a></li>
                 </#list>
             </ul>
