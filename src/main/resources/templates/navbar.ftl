@@ -16,7 +16,7 @@
             <#--<li class="active"><a href="#">Link</a></li>
             <li><a href="#">Link</a></li>-->
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Filter <b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">FILTER<span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="#">Action</a></li>
                     <li><a href="#">Another action</a></li>
@@ -33,7 +33,7 @@
                 <div id="navbar-input-group" class="input-group">
                     <#if search?? && search!="">
                     <input type="text" class="form-control" placeholder="${search}" id="query"
-                           name="query">
+                           name="query" value="${search}">
                     <#else>
                         <input type="text" class="form-control" placeholder="Search" id="query"
                                name="query">

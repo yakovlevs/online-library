@@ -6,6 +6,7 @@ import com.example.onlinelibrary.domain.User;
 import com.example.onlinelibrary.gbapi.BookDao;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -19,20 +20,21 @@ import static java.util.stream.Collectors.joining;
 
 @Log4j
 @Controller
+@Scope("session")
 public class MainController {
     @Autowired
     private BookDao bookDao;
     private String lastSearchQuery = "";
     private int booksOnPage = 20;
     private long currentPage = 0L;
-    private int numOfBooks = 0;
+    //private int numOfBooks = 0;
 
     @GetMapping({"/", "home"})
     public String getHome(Model model) {
         model.addAttribute("username", "");
         model.addAttribute("search", lastSearchQuery);
         model.addAttribute("booksOnPage", booksOnPage);
-        model.addAttribute("numOfBooks", numOfBooks);
+        //model.addAttribute("numOfBooks", numOfBooks);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!authentication.getPrincipal().toString().equals("anonymousUser")) {
             try {
@@ -82,24 +84,28 @@ public class MainController {
     public String getContent(
             @RequestParam(value = "query", required = true) String query,
             @RequestParam(value = "page", required = false) String page,
-            /*@RequestParam(value = "count", required = false) String count,*/
             Model model) {
         if (page != null) {
-            currentPage = Long.parseLong(page);
+            try {
+                currentPage = Long.parseLong(page);
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
+                currentPage = 0;
+            }
         }
         List<Book> result = bookDao.findByTitle(query, currentPage);
         if (!lastSearchQuery.equals(query)) {
-            numOfBooks = bookDao.getNumberOfBook();
+            //numOfBooks = bookDao.getNumberOfBook();
+            currentPage = 0L;
         }
-        model.addAttribute("booksOnPage", booksOnPage);
-        model.addAttribute("numOfBooks", numOfBooks);
         lastSearchQuery = query;
         if (result != null) {
+            model.addAttribute("booksOnPage", booksOnPage);
+            //model.addAttribute("numOfBooks", numOfBooks);
             model.addAttribute("searchResult", result);
-            log.info("user request: " + query +
-                    " page: " + page);
+            model.addAttribute("currentPage", currentPage);
+            log.info("user request: " + query + " page: " + page);
         }
-        model.addAttribute("currentPage", currentPage);
         return "content";
     }
 }

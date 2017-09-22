@@ -10,13 +10,12 @@
             <div class="col-sm-12 col-md-6 col-lg-3">
                 <div class="panel panel-default book-card">
                     <div class="panel-heading">
-                        <h5><b class="hide-title-overflow"> ${book.getTitle()} </b></h5>
-                        <p class="hide-title-overflow">
-                            <#if book.getSubtitle()??>
-                                ${book.getSubtitle()}&zwnj;
-                            <#else>
-                                &zwnj; &zwnj;<#--invisible placeholder (zero width non-joiner)-->
-                            </#if>
+                        <h5 data-toggle="tooltip" data-placement="top" title="${book.getTitle()}">
+                            <b class="hide-title-overflow"> ${book.getTitle()} </b>
+                        </h5>
+                        <p class="hide-title-overflow" data-toggle="tooltip" data-placement="top"
+                           title="${book.getSubtitle()}">
+                        ${book.getSubtitle()}
                         </p>
                     </div>
                     <div class="panel-body">
@@ -50,68 +49,43 @@
                                 <#else>
                                     <p><span class="text-primary">Author:</span> ...</p>
                                 </#if>
-                                <#if book.getCategories()??>
-                                    <p class="hide-title-overflow"><span class="text-primary">
-                                        <#if book.getCategories()?size gt 1>
-                                            Categories:
-                                        <#else>
-                                            Category:
-                                        </#if>
-                                    </span>
-                                        <#list  book.getCategories() as categorie>
-                                        ${categorie}<#if categorie?is_last>. <#else>, </#if>
-                                        </#list>
-                                    </p>
-                                <#else>
-                                    <p><span class="text-primary hide-title-overflow">Category:</span> ...</p>
-                                </#if>
-                                <#if book.getPublisher()??>
-                                    <p class="hide-description-overflow hide-title-overflow"><span
-                                            class="text-primary">Publisher:</span> ${book.getPublisher()}</p>
-                                <#else>
-                                    <p><span class="text-primary">Publisher:</span> ...</p>
-                                </#if>
-                                <#if book.getPublishedDate()??>
-                                    <p class="hide-description-overflow hide-title-overflow"><span
-                                            class="text-primary">Published date:</span> ${book.getPublishedDate()}</p>
-                                <#else>
-                                    <p><span class="text-primary hide-title-overflow">Published date:</span> ...</p>
-                                </#if>
-                                <#if book.getPageCount()??>
-                                    <p class="hide-description-overflow"><span
-                                            class="text-primary">Page count:</span> ${book.getPageCount()}</p>
-                                <#else>
-                                    <p><span class="text-primary">Page count:</span> ...</p>
-                                </#if>
-                                <#if book.getAverageRating()??>
-                                    <p class="hide-title-overflow"><span
-                                            class="text-primary">Rating:</span> ${book.getAverageRating()}</p>
-                                <#else>
-                                    <p><span class="text-primary">Rating:</span> ...</p>
-                                </#if>
-                                <#if book.getLanguage()??>
-                                    <p class="hide-title-overflow"><span
-                                            class="text-primary">Language:</span> ${book.getLanguage()}</p>
-                                <#else>
-                                    <p><span class="text-primary">Language:</span> ...</p>
-                                </#if>
-                                <#if book.getSaleability()??>
-                                    <#if book.getSaleability()>
-                                        <p class="hide-title-overflow"><span
-                                                class="text-primary">Non for sale</span></p>
+
+                                <p class="hide-title-overflow"><span class="text-primary">
+                                    <#if book.getCategories()?size gt 1>
+                                        Categories:
                                     <#else>
-                                        <p class="hide-title-overflow"><span
-                                                class="text-primary">For sale</span></p>
+                                        Category:
                                     </#if>
-                                <#else>
-                                    <p><span class="text-primary">Free:</span> ...</p>
-                                </#if>
-                                <#if book.getDescription()??>
-                                    <p class="hide-description-overflow"><span
-                                            class="text-primary">Description:</span> ${book.getDescription()}</p>
-                                <#else>
-                                    <p><span class="text-primary">Description:</span> ...</p>
-                                </#if>
+                                    </span>
+                                    <#list  book.getCategories() as categorie>
+                                    ${categorie}<#if categorie?is_last>. <#else>, </#if>
+                                    </#list>
+                                </p>
+
+
+                                <p class="hide-description-overflow hide-title-overflow"><span
+                                        class="text-primary">Publisher:</span> ${book.getPublisher()}</p>
+
+
+                                <p class="hide-description-overflow hide-title-overflow"><span
+                                        class="text-primary">Published date:</span> ${book.getPublishedDate()}</p>
+
+
+                                <p class="hide-description-overflow"><span
+                                        class="text-primary">Page count:</span> ${book.getPageCount()}</p>
+
+
+                                <p class="hide-title-overflow"><span
+                                        class="text-primary">Rating:</span> ${book.getAverageRating()}</p>
+
+
+                                <p class="hide-title-overflow"><span
+                                        class="text-primary">Language:</span> ${book.getLanguage()}</p>
+
+
+                                <p class="hide-description-overflow"><span
+                                        class="text-primary">Description:</span> ${book.getDescription()}</p>
+
                             </div>
                         </div>
                     </div>
