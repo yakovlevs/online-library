@@ -6,6 +6,7 @@ import com.example.onlinelibrary.domain.User;
 import com.example.onlinelibrary.gbapi.BookDao;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -19,11 +20,12 @@ import static java.util.stream.Collectors.joining;
 
 @Log4j
 @Controller
+@Scope("session")
 public class MainController {
     @Autowired
     private BookDao bookDao;
     private String lastSearchQuery = "";
-    private int booksOnPage = 20;
+    private int booksOnPage = 16;
     private long currentPage = 0L;
     private int numOfBooks = 0;
 
@@ -82,7 +84,6 @@ public class MainController {
     public String getContent(
             @RequestParam(value = "query", required = true) String query,
             @RequestParam(value = "page", required = false) String page,
-            /*@RequestParam(value = "count", required = false) String count,*/
             Model model) {
         if (page != null) {
             currentPage = Long.parseLong(page);
@@ -91,15 +92,14 @@ public class MainController {
         if (!lastSearchQuery.equals(query)) {
             numOfBooks = bookDao.getNumberOfBook();
         }
-        model.addAttribute("booksOnPage", booksOnPage);
-        model.addAttribute("numOfBooks", numOfBooks);
         lastSearchQuery = query;
         if (result != null) {
             model.addAttribute("searchResult", result);
-            log.info("user request: " + query +
-                    " page: " + page);
+            log.info("user request: " + query + " page: " + page);
+            model.addAttribute("booksOnPage", booksOnPage);
+            model.addAttribute("numOfBooks", numOfBooks);
+            model.addAttribute("currentPage", currentPage);
         }
-        model.addAttribute("currentPage", currentPage);
         return "content";
     }
 }

@@ -19,7 +19,6 @@ function ajax_submit(page) {
             $("#btn-search").prop("disabled", false);
             //console.log("SUCCESS : ", data);
             console.log("query : ", q);
-            /*resize();*/
         },
         error: function (e) {
             $('#content').html("<h4>Not found</h4>");
@@ -38,28 +37,18 @@ $(document).ready(function () {
         event.preventDefault();
         ajax_submit(0);
     });
-    $(document).on('click', '.book_page', function () {
-        var selected_page = $(this).text();
+    $(document).on('click', '#prev_page', function () {
+        if ($(this).attr("disabled") !== "disabled") {
+        var selected_page = parseInt($('#current_page').text());
         console.log("click ", selected_page);
-        ajax_submit(selected_page - 1); //difference in numeration between user and api
-        /*$('#page_selector').text(selected_page+" ").append("<span class=\"caret\"></span>");*/
+        ajax_submit(selected_page - 2);
+        }
+    });
+    $(document).on('click', '#next_page', function () {
+        if ($(this).attr("disabled") !== "disabled") {
+            var selected_page = parseInt($('#current_page').text());
+            console.log("click ", selected_page);
+            ajax_submit(selected_page);
+        }
     });
 });
-
-
-/*$(window).resize(function () {
-    resize();
-});
-
-function resize() {
-    var $window = $(window),
-        $html = $('html');
-    //console.log("window.width : ", $window.width());
-    if ($window.width() < 973) {
-        $html.find('.panel').removeClass('large-book-card');
-        $html.find('.panel').addClass('small-book-card');
-    } else {
-        $html.find('.panel').removeClass('small-book-card');
-        $html.find('.panel').addClass('large-book-card');
-    }
-}*/

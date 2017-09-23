@@ -95,17 +95,6 @@
                                 <#else>
                                     <p><span class="text-primary">Language:</span> ...</p>
                                 </#if>
-                                <#if book.getSaleability()??>
-                                    <#if book.getSaleability()>
-                                        <p class="hide-title-overflow"><span
-                                                class="text-primary">Non for sale</span></p>
-                                    <#else>
-                                        <p class="hide-title-overflow"><span
-                                                class="text-primary">For sale</span></p>
-                                    </#if>
-                                <#else>
-                                    <p><span class="text-primary">Free:</span> ...</p>
-                                </#if>
                                 <#if book.getDescription()??>
                                     <p class="hide-description-overflow"><span
                                             class="text-primary">Description:</span> ${book.getDescription()}</p>

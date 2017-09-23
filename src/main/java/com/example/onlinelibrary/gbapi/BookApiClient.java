@@ -41,9 +41,10 @@ public class BookApiClient {
         try {
             // Set query string and filters.
             Books.Volumes.List volumesList = books.volumes().list(query);
-            volumesList.setFilter("ebooks");
-            volumesList.setMaxResults(20L);
-            volumesList.setStartIndex(volumesList.getMaxResults() * page);
+            volumesList
+                    .setFilter("ebooks")
+                    .setMaxResults(16L)
+                    .setStartIndex(volumesList.getMaxResults() * page);
 
             // Execute the query.
             volumes = volumesList.execute();
