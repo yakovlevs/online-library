@@ -1,6 +1,6 @@
 <div id="paginator" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-<#if numOfBooks?? && (numOfBooks gt 0)>
+<#if searchResult?size gt 0>
     <div class="btn-group">
         <#if currentPage == 0>
             <a id="prev_page" class="btn btn-default" disabled="true">Previous</a>

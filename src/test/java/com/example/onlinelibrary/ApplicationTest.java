@@ -30,7 +30,6 @@ public class ApplicationTest {
         SecurityMockMvcRequestBuilders.FormLoginRequestBuilder login = formLogin()
                 .user("user")
                 .password("password");
-
         mockMvc.perform(login)
                 .andExpect(authenticated().withUsername("user"));
     }
@@ -52,7 +51,6 @@ public class ApplicationTest {
         SecurityMockMvcRequestBuilders.FormLoginRequestBuilder login = formLogin()
                 .user("invalid")
                 .password("invalid_password");
-
         mockMvc.perform(login)
                 .andExpect(unauthenticated());
     }

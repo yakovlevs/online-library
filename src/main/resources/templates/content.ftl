@@ -29,12 +29,12 @@
                         </div>
                         <div class="row">
                             <div class="container-fluid">
-                                <#if book.getWebReaderLink()??>
+                                <#--<#if book.getWebReaderLink()??>-->
                                     <p>
                                         <a class="btn-web-reader btn btn-primary center-block" role="button"
-                                           href="${book.getWebReaderLink()}">Web Reader</a>
+                                           href="<#--${book.getWebReaderLink()}-->">Web Reader</a>
                                     </p>
-                                </#if>
+                                <#--</#if>-->
                                 <#if book.getAuthors()??>
                                     <p class="hide-title-overflow"><span class="text-primary">
                                         <#if book.getAuthors()?size gt 1>

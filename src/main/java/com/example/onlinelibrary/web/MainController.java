@@ -1,9 +1,10 @@
 package com.example.onlinelibrary.web;
 
 import com.example.onlinelibrary.domain.Book;
+import com.example.onlinelibrary.domain.Query;
 import com.example.onlinelibrary.domain.Role;
 import com.example.onlinelibrary.domain.User;
-import com.example.onlinelibrary.gbapi.BookDao;
+import com.example.onlinelibrary.services.BookService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.joining;
@@ -23,7 +25,7 @@ import static java.util.stream.Collectors.joining;
 @Scope("session")
 public class MainController {
     @Autowired
-    private BookDao bookDao;
+    private BookService bookService;
     private String lastSearchQuery = "";
     private int booksOnPage = 16;
     private long currentPage = 0L;
@@ -44,7 +46,11 @@ public class MainController {
                 log.info(ex);
             }
         }
-        model.addAttribute("searchResult", bookDao.findByTitle(lastSearchQuery, currentPage));
+        if (!lastSearchQuery.equals("")) {
+            model.addAttribute("searchResult", bookService.findByTitle(Query.builder().setTitle(lastSearchQuery).build()));
+        } else {
+            model.addAttribute("searchResult", new ArrayList<Book>());
+        }
         model.addAttribute("currentPage", currentPage);
         return "home";
     }
@@ -88,9 +94,11 @@ public class MainController {
         if (page != null) {
             currentPage = Long.parseLong(page);
         }
-        List<Book> result = bookDao.findByTitle(query, currentPage);
+
+        //TODO: add another req params
+        List<Book> result = bookService.findByTitle(Query.builder().setTitle(query).build());
         if (!lastSearchQuery.equals(query)) {
-            numOfBooks = bookDao.getNumberOfBook();
+
         }
         lastSearchQuery = query;
         if (result != null) {
