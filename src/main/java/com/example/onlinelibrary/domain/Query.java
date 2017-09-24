@@ -1,12 +1,13 @@
 package com.example.onlinelibrary.domain;
 
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
-
+@ToString
 public class Query {
     private String request;
     private int startIndex;
@@ -52,12 +53,12 @@ public class Query {
             return this;
         }
 
-        public Builder setStartIndex(@NonNull int index) {
+        public Builder setStartIndex(int index) {
             Query.this.startIndex = index;
             return this;
         }
 
-        public Builder setMaxResult(@NonNull int results) {
+        public Builder setMaxResult(int results) {
             Query.this.maxResults = results;
             return this;
         }

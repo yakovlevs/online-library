@@ -27,8 +27,8 @@ public class MainController {
     @Autowired
     private BookService bookService;
     private String lastSearchQuery = "";
-    private int booksOnPage = 16;
-    private long currentPage = 0L;
+    private int booksOnPage = 20;
+    private int currentPage = 0;
     private int numOfBooks = 0;
 
     @GetMapping({"/", "home"})
@@ -92,18 +92,22 @@ public class MainController {
             @RequestParam(value = "page", required = false) String page,
             Model model) {
         if (page != null) {
-            currentPage = Long.parseLong(page);
+            currentPage = Integer.parseInt(page);
         }
 
         //TODO: add another req params
-        List<Book> result = bookService.findByTitle(Query.builder().setTitle(query).build());
+        List<Book> result = bookService.findByTitle(Query.builder()
+                .setTitle(query)
+                .setMaxResult(booksOnPage)
+                .setStartIndex(currentPage * booksOnPage)
+                .build());
         if (!lastSearchQuery.equals(query)) {
 
         }
         lastSearchQuery = query;
         if (result != null) {
             model.addAttribute("searchResult", result);
-            log.info("user request: " + query + " page: " + page);
+            log.info("user request: " + query + "; page: " + page);
             model.addAttribute("booksOnPage", booksOnPage);
             model.addAttribute("numOfBooks", numOfBooks);
             model.addAttribute("currentPage", currentPage);
