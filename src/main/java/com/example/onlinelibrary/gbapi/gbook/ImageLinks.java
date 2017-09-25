@@ -1,8 +1,16 @@
 package com.example.onlinelibrary.gbapi.gbook;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
+@Getter
+@NoArgsConstructor
 public class ImageLinks {
     private String thumbnail = "";
+
+    public void setThumbnail(String thumbnail) {
+        if (thumbnail != null) {
+            this.thumbnail = thumbnail;
+        }
+    }
 }
