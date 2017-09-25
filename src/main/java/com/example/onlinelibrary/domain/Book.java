@@ -18,9 +18,10 @@ public class Book {
     private Integer pageCount;
     private Double averageRating;
     private String language;
-    private Boolean saleability;
     private List<String> categories;
     private String description;
     private String thumbnailUrl;
-    private String webReaderLink;
+    private String pdfLink;
+    private String epubLink;
+    //private String isbn;
 }
