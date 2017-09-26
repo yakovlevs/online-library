@@ -70,4 +70,23 @@ public class Query {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Query query = (Query) o;
+
+        if (startIndex != query.startIndex) return false;
+        if (maxResults != query.maxResults) return false;
+        return request.equals(query.request);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = request.hashCode();
+        result = 31 * result + startIndex;
+        result = 31 * result + maxResults;
+        return result;
+    }
 }

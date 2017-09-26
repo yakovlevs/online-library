@@ -25,12 +25,17 @@ import static java.util.stream.Collectors.joining;
 @Controller
 @Scope("session")
 public class MainController {
-    @Autowired
-    private BookService bookService;
+    private final BookService bookService;
     private String lastSearchQuery = "";
     private int booksOnPage = 20;
     private int currentPage = 0;
     private int numOfBooks = 0;
+    private List<Book> lastSearchResult = null;
+
+    @Autowired
+    public MainController(BookService bookService) {
+        this.bookService = bookService;
+    }
 
     @GetMapping({"/", "home"})
     public String getHome(Model model) {
@@ -106,9 +111,9 @@ public class MainController {
                 .setMaxResult(booksOnPage)
                 .setStartIndex(currentPage * booksOnPage)
                 .build());
-        if (!lastSearchQuery.equals(query)) {
 
-        }
+        lastSearchResult = result;
+
         lastSearchQuery = query;
         if (result != null) {
             model.addAttribute("searchResult", result);
@@ -118,5 +123,16 @@ public class MainController {
             model.addAttribute("currentPage", currentPage);
         }
         return "content";
+    }
+
+    @GetMapping("/{id}")
+    public String getBook(@PathVariable String id, Model model) {
+        if (lastSearchResult != null) {
+            Book book = lastSearchResult.stream().filter(b -> b.getId().equals(id))
+                    .findFirst()
+                    .orElse(null);
+            model.addAttribute("book", book);
+        }
+        return "book";
     }
 }

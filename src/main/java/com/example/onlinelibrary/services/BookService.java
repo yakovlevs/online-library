@@ -23,6 +23,7 @@ public class BookService {
 
         if (result != null) {
             return result.stream().map(volume -> Book.builder()
+                    .id(volume.getId())
                     .title(volume.getVolumeInfo().getTitle())
                     .subtitle(volume.getVolumeInfo().getSubtitle())
                     .authors(volume.getVolumeInfo().getAuthors())

@@ -4,11 +4,13 @@ body {
 #content {
     /*padding-top: 10px;*/
 }
+
 .book-card {
     height: 700px;
 }
+
 .navbar {
-    margin-bottom: 0px !important;
+    margin-bottom: 0 !important;
 }
 
 .book-thumbnail {
@@ -19,6 +21,13 @@ body {
     margin-bottom: 10px;
     height: 215px;
     display: block;
+}
+
+.img-bordered {
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    border: 1px solid #dddddd;
 }
 
 .btn-web-reader {

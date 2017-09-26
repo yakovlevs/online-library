@@ -8,7 +8,7 @@
             <a id="prev_page" class="btn btn-default">Previous</a>
         </#if>
         <div class="btn-group">
-            <a id="current_page" href="#" class="btn btn-default">${currentPage+1}</a>
+            <a id="current_page" class="btn btn-default">${currentPage+1}</a>
         </div>
         <#if searchResult?size lt booksOnPage>
             <a id="next_page" class="btn btn-default" disabled="true">Next</a>

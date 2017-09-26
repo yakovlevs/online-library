@@ -10,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Book {
+    private String id;
     private String title;
     private String subtitle;
     private List<String> authors;
@@ -24,5 +25,4 @@ public class Book {
     private String pdfLink;
     private String epubLink;
     private String webReaderLink;
-    //private String isbn;
 }

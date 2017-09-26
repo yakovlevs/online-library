@@ -24,7 +24,6 @@ public class GoogleBooksApiClient {
     @Value("${application.googleBooksApi.AppKey}")
     private String API_KEY;
 
-    @Cacheable("booksList")
     public List<GoogleBook> executeQuery(Query query) {
         log.info("API request:" + query.toString());
         GoogleBooksApiResponse result = restTemplate().getForObject(prepareUrl(query), GoogleBooksApiResponse.class);
