@@ -36,6 +36,7 @@ public class BookService {
                     .thumbnailUrl(volume.getVolumeInfo().getImageLinks().getThumbnail())
                     .pdfLink(volume.getAccessInfo().getPdf().getDownloadLink())
                     .epubLink(volume.getAccessInfo().getEpub().getDownloadLink())
+                    .webReaderLink(volume.getAccessInfo().getWebReaderLink())
                     .build()
             ).collect(Collectors.toList());
         } else {

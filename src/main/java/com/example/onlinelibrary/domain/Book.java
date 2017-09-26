@@ -23,5 +23,6 @@ public class Book {
     private String thumbnailUrl;
     private String pdfLink;
     private String epubLink;
+    private String webReaderLink;
     //private String isbn;
 }

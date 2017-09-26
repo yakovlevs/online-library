@@ -22,7 +22,7 @@ public class Query {
                 "title,subtitle,authors,publisher,publishedDate," +
                 "description,pageCount,categories,averageRating," +
                 "language,industryIdentifiers,imageLinks(thumbnail))," +
-                "accessInfo(epub(downloadLink),pdf(downloadLink)))";
+                "accessInfo(epub(downloadLink),pdf(downloadLink),webReaderLink))";
         String result ="";
         if (request != null) result += "q=" + encodeToUtf8(request);
         result += "&startIndex=" + startIndex;

@@ -37,28 +37,41 @@
                                     </div>
                                     <div class="col-lg-2">
                                         <p>
-                                        <a
-                                            <#if book.getPdfLink() != "">
-                                            href="${book.getPdfLink()}"
-                                            class="text-success">
-                                            <#else>
-                                                class="text-muted">
-                                            </#if>
-                                            PDF
-                                        </a>
+                                            <a
+                                                <#if book.getPdfLink() != "">
+                                                        href="${book.getPdfLink()}"
+                                                        class="text-success">
+                                                <#else>
+                                                    class="text-muted">
+                                                </#if>
+                                                PDF
+                                            </a>
                                         </p>
                                     </div>
                                     <div class="col-lg-2">
                                         <p>
-                                        <a
-                                            <#if book.getEpubLink() != "">
-                                            href="${book.getEpubLink()}"
-                                            class="text-success">
-                                            <#else>
-                                                class="text-muted">
-                                            </#if>
-                                            EPUB
-                                        </a>
+                                            <a
+                                                <#if book.getEpubLink() != "">
+                                                        href="${book.getEpubLink()}"
+                                                        class="text-success">
+                                                <#else>
+                                                    class="text-muted">
+                                                </#if>
+                                                EPUB
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <p>
+                                            <a
+                                                <#if book.getWebReaderLink() != "">
+                                                        href="${book.getWebReaderLink()}"
+                                                        class="text-success">
+                                                <#else>
+                                                    class="text-muted">
+                                                </#if>
+                                                EPUB
+                                            </a>
                                         </p>
                                     </div>
                                 </div>

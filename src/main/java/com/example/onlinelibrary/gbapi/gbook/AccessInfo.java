@@ -12,6 +12,7 @@ public class AccessInfo {
     private Source pdf = new Source();
     @JsonProperty("epub")
     private Source epub = new Source();
+    private String webReaderLink;
 
     @JsonSetter("pdf")
     public void setPdf(Source pdf) {
@@ -24,6 +25,13 @@ public class AccessInfo {
     public void setEpub(Source epub) {
         if (epub != null) {
             this.epub = epub;
+        }
+    }
+
+    @JsonSetter("webReaderLink")
+    public void setWebReaderLink(String webReaderLink) {
+        if (webReaderLink != null) {
+            this.webReaderLink = webReaderLink;
         }
     }
 }
