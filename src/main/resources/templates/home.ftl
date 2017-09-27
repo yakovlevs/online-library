@@ -11,12 +11,19 @@
 
 </head>
 <body>
-
-<#include "navbar.ftl">
-
-<div id="content" class="container-fluid">
-<#include "content.ftl">
+<div id="main-loader">
+<#include "overlay.ftl">
 </div>
+<div id="your-page">
+<#include "navbar.ftl">
+    <div id="content-loader">
+        <#include "overlay.ftl">
+    </div>
+    <div id="content" class="container-fluid">
+    <#include "content.ftl">
+    </div>
+</div>
+
 
 <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>

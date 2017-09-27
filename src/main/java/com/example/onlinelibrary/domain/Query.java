@@ -1,15 +1,16 @@
 package com.example.onlinelibrary.domain;
 
 import lombok.NonNull;
-import lombok.ToString;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URLEncoder;
-@ToString
+
 public class Query {
     private String request;
+    private String language;
+    private String filter;
+    private String download;
+    private String printType;
     private int startIndex;
     private int maxResults = 10;
 
@@ -23,8 +24,12 @@ public class Query {
                 "description,pageCount,categories,averageRating," +
                 "language,industryIdentifiers,imageLinks(thumbnail))," +
                 "accessInfo(epub(downloadLink),pdf(downloadLink),webReaderLink))";
-        String result ="";
+        String result = "";
         if (request != null) result += "q=" + encodeToUtf8(request);
+        if (language != null) result += "&langRestrict=" + language;
+        if (filter != null) result += "&filter=" + filter;
+        if (download != null) result += "&download=" + download;
+        if (printType != null) result += "&printType=" + printType;
         result += "&startIndex=" + startIndex;
         result += "&maxResults=" + maxResults;
         result += "&fields=" + encodeToUtf8(requiredFields);
@@ -55,8 +60,30 @@ public class Query {
             return this;
         }
 
+        public Builder setLanguage(@NonNull String language) {
+            Query.this.language = language;
+            return this;
+        }
+
+        public Builder setFilter(@NonNull String filter) {
+            Query.this.filter = filter;
+            return this;
+        }
+
+        public Builder setPrintType(@NonNull String printType) {
+            Query.this.printType = printType;
+            return this;
+        }
+
         public Builder setStartIndex(int index) {
             Query.this.startIndex = index;
+            return this;
+        }
+
+        public Builder setDownloadable(boolean downloadable) {
+            if (downloadable) {
+                Query.this.download = "epub";
+            }
             return this;
         }
 
@@ -79,12 +106,20 @@ public class Query {
 
         if (startIndex != query.startIndex) return false;
         if (maxResults != query.maxResults) return false;
-        return request.equals(query.request);
+        if (request != null ? !request.equals(query.request) : query.request != null) return false;
+        if (language != null ? !language.equals(query.language) : query.language != null) return false;
+        if (filter != null ? !filter.equals(query.filter) : query.filter != null) return false;
+        if (download != null ? !download.equals(query.download) : query.download != null) return false;
+        return printType != null ? printType.equals(query.printType) : query.printType == null;
     }
 
     @Override
     public int hashCode() {
-        int result = request.hashCode();
+        int result = request != null ? request.hashCode() : 0;
+        result = 31 * result + (language != null ? language.hashCode() : 0);
+        result = 31 * result + (filter != null ? filter.hashCode() : 0);
+        result = 31 * result + (download != null ? download.hashCode() : 0);
+        result = 31 * result + (printType != null ? printType.hashCode() : 0);
         result = 31 * result + startIndex;
         result = 31 * result + maxResults;
         return result;

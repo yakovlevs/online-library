@@ -13,34 +13,23 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-            <#--<li class="active"><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>-->
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">FILTER<span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">One more separated link</a></li>
-                </ul>
-            </li>
+        <#--<li class="active"><a href="#">Link</a></li>
+        <li><a href="#">Link</a></li>-->
+            <#include "filter.ftl">
         </ul>
         <div class="col-sm-3 col-md-3">
             <form id="search-form" class="navbar-form" role="search">
                 <div id="navbar-input-group" class="input-group">
-                    <#if search?? && search!="">
+                <#if search?? && search!="">
                     <input type="text" class="form-control" placeholder="${search}" id="query"
                            name="query" value="${search}">
-                    <#else>
-                        <input type="text" class="form-control" placeholder="Search" id="query"
-                               name="query">
-                    </#if>
+                <#else>
+                    <input type="text" class="form-control" placeholder="Search" id="query"
+                           name="query">
+                </#if>
                     <div class="input-group-btn">
                         <button id="btn-search" class="btn btn-default" type="submit">
-                            <#--<i class="glyphicon glyphicon-search"></i>-->
+                        <#--<i class="glyphicon glyphicon-search"></i>-->
                             <span>Search</span>
                         </button>
                     </div>

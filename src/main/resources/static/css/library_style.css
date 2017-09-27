@@ -67,6 +67,14 @@ p {
     width: 100%;
 }
 
+#your-page {
+    display: none;
+}
+
+#content-loader {
+    display: none;
+}
+
 /*when navbar is horizontal*/
 @media (min-width: 768px) {
     .menu-search-text-input {

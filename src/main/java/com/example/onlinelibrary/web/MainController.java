@@ -100,15 +100,22 @@ public class MainController {
     public String getContent(
             @RequestParam(value = "query", required = true) String query,
             @RequestParam(value = "page", required = false) String page,
+            @RequestParam(value = "lang", required = false) String language,
+            @RequestParam(value = "filter", required = false) String filter,
+            @RequestParam(value = "print", required = false) String print,
+            @RequestParam(value = "downloadable", required = false) Boolean downloadable,
             Model model) {
         if (page != null) {
             currentPage = Integer.parseInt(page);
         }
 
-        //TODO: add another req params
         List<Book> result = bookService.findByTitle(Query.builder()
                 .setTitle(query)
                 .setMaxResult(booksOnPage)
+                .setFilter(filter)
+                .setPrintType(print)
+                .setDownloadable(downloadable)
+                .setLanguage(language)
                 .setStartIndex(currentPage * booksOnPage)
                 .build());
 
