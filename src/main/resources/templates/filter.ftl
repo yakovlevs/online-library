@@ -1,5 +1,5 @@
 <li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">FILTER<span class="caret"></span></a>
+    <a   class="dropdown-toggle" data-toggle="dropdown">FILTER<span class="caret"></span></a>
     <ul class="dropdown-menu">
         <li class="divider"></li>
         <li>

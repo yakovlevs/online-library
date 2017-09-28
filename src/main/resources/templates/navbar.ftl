@@ -7,14 +7,14 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Online Library</a>
+        <a class="navbar-brand">Online Library</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-        <#--<li class="active"><a href="#">Link</a></li>
-        <li><a href="#">Link</a></li>-->
+        <#--<li class="active"><a  >Link</a></li>
+        <li><a  >Link</a></li>-->
             <#include "filter.ftl">
         </ul>
         <div class="col-sm-3 col-md-3">
@@ -40,7 +40,7 @@
         <ul class="nav navbar-nav navbar-right">
         <#if (username??) && (username!="")>
             <li class="dropdown" hidden>
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                    aria-expanded="false">
                     <span class="glyphicon glyphicon-user"></span>
                 ${username}
@@ -50,7 +50,7 @@
                     <li><a href="/user">User page</a></li>
                     <li role="separator" class="divider"></li>
                     <li>
-                        <a href="#" onclick="logout()">Logout</a>
+                        <a onclick="logout()">Logout</a>
                         <form id="logout_form" action="${"/logout"}" method="post">
                             <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}">
                         </form>

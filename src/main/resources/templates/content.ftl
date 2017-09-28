@@ -10,7 +10,8 @@
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                 <div class="panel panel-default book-card">
                     <div class="panel-heading">
-                        <h5><a href="/${book.getId()}"><b class="hide-title-overflow"> ${book.getTitle()} </b></a></h5>
+                        <h5><a href="/${book.getId()}"><b
+                                class="hide-title-overflow"> ${book.getTitle()} </b></a></h5>
                         <p class="hide-title-overflow"> ${book.getSubtitle()}&zwnj; </p>
                     </div>
                     <div class="panel-body">
@@ -23,6 +24,10 @@
                                      src="img/img_placeholder.jpg"
                                     </#if>>
                             </a>
+                            <#if (username??) && (username!="")>
+                                <a id="fav-button" class="btn btn-primary center-block"><b>+</b><span
+                                        class="glyphicon glyphicon-heart"></span></a>
+                            </#if>
                         </div>
                         <div class="row">
                             <div class="container-fluid">
@@ -96,7 +101,7 @@
 
     <#else>
         <div class="col-md-2">
-            <h6>Not found</h6>
+            <h6>Welcome to online library!</h6>
         </div>
     </#if>
 </div>

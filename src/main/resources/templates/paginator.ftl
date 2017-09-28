@@ -16,6 +16,21 @@
             <a id="next_page" class="btn btn-default">Next</a>
         </#if>
     </div>
+    <div class="btn-group">
+        <a id="on_page" class="btn btn-default">${booksOnPage}</a>
+        <div class="btn-group">
+            <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                Show on page
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a id="on_page_value">10</a></li>
+                <li><a id="on_page_value">20</a></li>
+                <li><a id="on_page_value">30</a></li>
+                <li><a id="on_page_value">40</a></li>
+            </ul>
+        </div>
+    </div>
 <#else>
     <div class="row"></div>
 </#if>

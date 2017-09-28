@@ -30,7 +30,8 @@ public class MainController {
     private int booksOnPage = 20;
     private int currentPage = 0;
     private int numOfBooks = 0;
-    private List<Book> lastSearchResult = null;
+    private List<Book> lastSearchResult;
+    private User user;
 
     @Autowired
     public MainController(BookService bookService) {
@@ -39,19 +40,13 @@ public class MainController {
 
     @GetMapping({"/", "home"})
     public String getHome(Model model) {
+        updateUser();
         model.addAttribute("username", "");
         model.addAttribute("search", lastSearchQuery);
         model.addAttribute("booksOnPage", booksOnPage);
         model.addAttribute("numOfBooks", numOfBooks);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!authentication.getPrincipal().toString().equals("anonymousUser")) {
-            try {
-                User user = (User) authentication.getPrincipal();
-                model.addAttribute("username", user.getUsername());
-            } catch (ClassCastException ex) {
-                log.info(ex);
-            }
-        }
+        if (user != null) model.addAttribute("username", user.getUsername());
+
         if (!lastSearchQuery.equals("")) {
             model.addAttribute("searchResult", bookService.findByTitle(Query.builder()
                     .setTitle(lastSearchQuery)
@@ -70,12 +65,9 @@ public class MainController {
         model.addAttribute("username", "");
         model.addAttribute("roles", "");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        try {
-            User user = (User) authentication.getPrincipal();
+        if (user != null) {
             model.addAttribute("username", user.getUsername());
             model.addAttribute("roles", user.getAuthorities().stream().map(Role::getAuthority).collect(joining(",")));
-        } catch (ClassCastException ex) {
-            log.info(ex);
         }
         return "user";
     }
@@ -90,8 +82,9 @@ public class MainController {
         if (logout != null) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             authentication = null;
-            model.addAttribute("username", "");
+            //model.addAttribute("username", "");
             lastSearchQuery = "";
+            updateUser();
         }
         return "login";
     }
@@ -100,6 +93,7 @@ public class MainController {
     public String getContent(
             @RequestParam(value = "query", required = true) String query,
             @RequestParam(value = "page", required = false) String page,
+            @RequestParam(value = "onPage", required = false) String onPage,
             @RequestParam(value = "lang", required = false) String language,
             @RequestParam(value = "filter", required = false) String filter,
             @RequestParam(value = "print", required = false) String print,
@@ -107,6 +101,9 @@ public class MainController {
             Model model) {
         if (page != null) {
             currentPage = Integer.parseInt(page);
+        }
+        if (onPage != null && !onPage.equals("undefined")) {
+            booksOnPage = Integer.parseInt(onPage);
         }
 
         List<Book> result = bookService.findByTitle(Query.builder()
@@ -129,6 +126,8 @@ public class MainController {
             model.addAttribute("numOfBooks", numOfBooks);
             model.addAttribute("currentPage", currentPage);
         }
+        if (user != null) model.addAttribute("username", user.getUsername());
+        if (result==null) return "not_found";
         return "content";
     }
 
@@ -141,5 +140,18 @@ public class MainController {
             model.addAttribute("book", book);
         }
         return "book";
+    }
+
+    private void updateUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!authentication.getPrincipal().toString().equals("anonymousUser")) {
+            try {
+                user = (User) authentication.getPrincipal();
+            } catch (ClassCastException ex) {
+                log.info(ex);
+            }
+        } else {
+            user = null;
+        }
     }
 }

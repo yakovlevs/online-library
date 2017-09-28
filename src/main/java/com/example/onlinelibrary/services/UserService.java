@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.HashSet;
 import java.util.Optional;
 
 @Service
@@ -32,6 +33,7 @@ public class UserService implements UserDetailsService {
                     .accountNonLocked(true)
                     .credentialsNonExpired(true)
                     .enabled(true)
+                    .favoriteBooks(new HashSet<>())
                     .build());
             userDao.save(User.builder()
                     .username("admin")
@@ -41,6 +43,7 @@ public class UserService implements UserDetailsService {
                     .accountNonLocked(true)
                     .credentialsNonExpired(true)
                     .enabled(true)
+                    .favoriteBooks(new HashSet<>())
                     .build());
             userDao.save(User.builder()
                     .username("power")
@@ -50,6 +53,7 @@ public class UserService implements UserDetailsService {
                     .accountNonLocked(true)
                     .credentialsNonExpired(true)
                     .enabled(true)
+                    .favoriteBooks(new HashSet<>())
                     .build());
         }
     }
