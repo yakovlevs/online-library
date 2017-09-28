@@ -11,6 +11,7 @@ public class Query {
     private String filter;
     private String download;
     private String printType;
+    private String order;
     private int startIndex;
     private int maxResults = 10;
 
@@ -30,6 +31,7 @@ public class Query {
         if (filter != null) result += "&filter=" + filter;
         if (download != null) result += "&download=" + download;
         if (printType != null) result += "&printType=" + printType;
+        if (order != null) result += "&orderBy=" + order;
         result += "&startIndex=" + startIndex;
         result += "&maxResults=" + maxResults;
         result += "&fields=" + encodeToUtf8(requiredFields);
@@ -74,6 +76,10 @@ public class Query {
             Query.this.printType = printType;
             return this;
         }
+        public Builder setOrder(@NonNull String order) {
+            Query.this.order = order;
+            return this;
+        }
 
         public Builder setStartIndex(int index) {
             Query.this.startIndex = index;
@@ -110,7 +116,8 @@ public class Query {
         if (language != null ? !language.equals(query.language) : query.language != null) return false;
         if (filter != null ? !filter.equals(query.filter) : query.filter != null) return false;
         if (download != null ? !download.equals(query.download) : query.download != null) return false;
-        return printType != null ? printType.equals(query.printType) : query.printType == null;
+        if (printType != null ? !printType.equals(query.printType) : query.printType != null) return false;
+        return order != null ? order.equals(query.order) : query.order == null;
     }
 
     @Override
@@ -120,6 +127,7 @@ public class Query {
         result = 31 * result + (filter != null ? filter.hashCode() : 0);
         result = 31 * result + (download != null ? download.hashCode() : 0);
         result = 31 * result + (printType != null ? printType.hashCode() : 0);
+        result = 31 * result + (order != null ? order.hashCode() : 0);
         result = 31 * result + startIndex;
         result = 31 * result + maxResults;
         return result;

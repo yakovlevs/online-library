@@ -25,7 +25,7 @@
                                     </#if>>
                             </a>
                             <#if (username??) && (username!="")>
-                                <a id="fav-button" class="btn btn-primary center-block"><b>+</b><span
+                                <a id="fav-button" class="btn btn-default center-block"><b>+</b><span
                                         class="glyphicon glyphicon-heart"></span></a>
                             </#if>
                         </div>

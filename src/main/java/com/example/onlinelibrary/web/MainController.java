@@ -97,6 +97,7 @@ public class MainController {
             @RequestParam(value = "lang", required = false) String language,
             @RequestParam(value = "filter", required = false) String filter,
             @RequestParam(value = "print", required = false) String print,
+            @RequestParam(value = "order", required = false) String order,
             @RequestParam(value = "downloadable", required = false) Boolean downloadable,
             Model model) {
         if (page != null) {
@@ -113,6 +114,7 @@ public class MainController {
                 .setPrintType(print)
                 .setDownloadable(downloadable)
                 .setLanguage(language)
+                .setOrder(order)
                 .setStartIndex(currentPage * booksOnPage)
                 .build());
 

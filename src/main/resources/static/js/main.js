@@ -9,6 +9,7 @@ function ajax_submit(p, c) {
     $("#btn-search").prop("disabled", true);
     var query = "query=" + $("#query").val();
     var lang = "lang=" + $('input[name="langradio"]:checked').val();
+    var order = "order=" + $('input[name="orderradio"]:checked').val();
     var filter = "filter=" + $('input[name="filtradio"]:checked').val();
     var print = "print=" + $('input[name="printradio"]:checked').val();
     var onPage = "onPage=" + c;
@@ -16,7 +17,7 @@ function ajax_submit(p, c) {
     var download = "downloadable=" + $('#download').is(":checked");
     //console.log("print: ", $('input[name="printradio"]:checked').val());
     var page = "page=" + p;
-    var req = query + "&" + page + "&" + lang + "&" + filter + "&" + download + "&" + print + "&" + onPage;
+    var req = query + "&" + page + "&" + lang + "&" + filter + "&" + download + "&" + print + "&" + onPage+"&"+order;
     console.log("req: " + req);
     $.ajax({
         type: "GET",
