@@ -1,6 +1,7 @@
 package com.example.onlinelibrary.services;
 
 
+import com.example.onlinelibrary.domain.Books;
 import com.example.onlinelibrary.domain.Role;
 import com.example.onlinelibrary.domain.User;
 import com.example.onlinelibrary.persistence.UserDao;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 
@@ -43,7 +45,12 @@ public class UserService implements UserDetailsService {
                     .accountNonLocked(true)
                     .credentialsNonExpired(true)
                     .enabled(true)
-                    .favoriteBooks(new HashSet<>())
+                    .favoriteBooks(new HashSet<>(
+                            Arrays.asList(
+                                    Books.builder().googleId("fbM1DwAAQBAJ").build(),
+                                    Books.builder().googleId("twKQ7zpid2UC").build(),
+                                    Books.builder().googleId("eavbBQAAQBAJ").build(),
+                                    Books.builder().googleId("5NomkK4EV68C").build())))
                     .build());
             userDao.save(User.builder()
                     .username("power")

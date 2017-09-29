@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
 
@@ -30,7 +31,7 @@ public class MainController {
     private int booksOnPage = 20;
     private int currentPage = 0;
     private int numOfBooks = 0;
-    private List<Book> lastSearchResult;
+    //private List<Book> lastSearchResult;
     private User user;
 
     @Autowired
@@ -46,7 +47,6 @@ public class MainController {
         model.addAttribute("booksOnPage", booksOnPage);
         model.addAttribute("numOfBooks", numOfBooks);
         if (user != null) model.addAttribute("username", user.getUsername());
-
         if (!lastSearchQuery.equals("")) {
             model.addAttribute("searchResult", bookService.findByTitle(Query.builder()
                     .setTitle(lastSearchQuery)
@@ -62,12 +62,21 @@ public class MainController {
 
     @GetMapping("/user")
     public String getHello(Model model) {
+        updateUser();
         model.addAttribute("username", "");
         model.addAttribute("roles", "");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (user != null) {
+            List<Book> favoriteBooks = user.getFavoriteBooks()
+                    .stream().map(x -> bookService.findByTitle(
+                            Query.builder()
+                                    .setTitle(x.getGoogleId())
+                                    .setStartIndex(0)
+                                    .setMaxResult(1)
+                                    .build()).get(0)).collect(Collectors.toList());
             model.addAttribute("username", user.getUsername());
             model.addAttribute("roles", user.getAuthorities().stream().map(Role::getAuthority).collect(joining(",")));
+            model.addAttribute("favorites", favoriteBooks);
         }
         return "user";
     }
@@ -118,7 +127,7 @@ public class MainController {
                 .setStartIndex(currentPage * booksOnPage)
                 .build());
 
-        lastSearchResult = result;
+        //lastSearchResult = result;
 
         lastSearchQuery = query;
         if (result != null) {
@@ -128,19 +137,24 @@ public class MainController {
             model.addAttribute("numOfBooks", numOfBooks);
             model.addAttribute("currentPage", currentPage);
         }
-        if (user != null) model.addAttribute("username", user.getUsername());
-        if (result==null) return "not_found";
+        updateUser();
+        if (user != null) {
+            model.addAttribute("username", user.getUsername());
+            //TODO add fav list
+        }
+        if (result == null) return "not_found";
         return "content";
     }
 
     @GetMapping("/{id}")
     public String getBook(@PathVariable String id, Model model) {
-        if (lastSearchResult != null) {
-            Book book = lastSearchResult.stream().filter(b -> b.getId().equals(id))
-                    .findFirst()
-                    .orElse(null);
-            model.addAttribute("book", book);
-        }
+        Book book = bookService.findByGoogleId(
+                Query.builder()
+                        .setTitle(id)
+                        .setStartIndex(0)
+                        .setMaxResult(1)
+                        .build());
+        model.addAttribute("book", book);
         return "book";
     }
 

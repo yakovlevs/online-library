@@ -6,11 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css">
 <#include "theme.ftl">
-
-    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-
+    <link rel="stylesheet" href="/css/library_style.css">
 </head>
 <body>
 <div class="container">
@@ -20,6 +16,15 @@
         <input type="submit" value="Sign Out"/>
         <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}">
     </form>
+<#if favorites??>
+    <#assign totalFavBooks = favorites?size>
+<p>${totalFavBooks}</p>
+    <#if totalFavBooks gt 0>
+        <#list favorites as book>
+            <#include "book_card.ftl">
+        </#list>
+    </#if>
+</#if>
 </div>
 <script src="/webjars/jquery-3.2.1.js"></script>
 <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>

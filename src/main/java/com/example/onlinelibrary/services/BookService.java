@@ -19,36 +19,31 @@ public class BookService {
     @Cacheable("books")
     public List<Book> findByTitle(Query query) {
         List<GoogleBook> result = bookApiClient.executeQuery(query);
-
-        if (result != null) {
-            return result.stream().map(volume -> Book.builder()
-                    .id(volume.getId())
-                    .title(volume.getVolumeInfo().getTitle())
-                    .subtitle(volume.getVolumeInfo().getSubtitle())
-                    .authors(volume.getVolumeInfo().getAuthors())
-                    .publisher(volume.getVolumeInfo().getPublisher())
-                    .publishedDate(volume.getVolumeInfo().getPublishedDate())
-                    .pageCount(volume.getVolumeInfo().getPageCount())
-                    .averageRating(volume.getVolumeInfo().getAverageRating())
-                    .language(volume.getVolumeInfo().getLanguage())
-                    .categories(volume.getVolumeInfo().getCategories())
-                    .description(volume.getVolumeInfo().getDescription())
-                    .thumbnailUrl(volume.getVolumeInfo().getImageLinks().getThumbnail())
-                    .pdfLink(volume.getAccessInfo().getPdf().getDownloadLink())
-                    .epubLink(volume.getAccessInfo().getEpub().getDownloadLink())
-                    .webReaderLink(volume.getAccessInfo().getWebReaderLink())
-                    .build()
-            ).collect(Collectors.toList());
-        } else {
-            return null;
-        }
-    }
-
-    public List<Book> findByAuthor(String author) {
+        if (result != null) return result.stream().map(this::convertGoogleBook).collect(Collectors.toList());
         return null;
     }
 
-    public Book findByIsbn() {
-        return null;
+    public Book findByGoogleId(Query query) {
+        return convertGoogleBook(bookApiClient.executeQuery(query).get(0));
+    }
+
+    private Book convertGoogleBook(GoogleBook volume) {
+        return Book.builder()
+                .id(volume.getId())
+                .title(volume.getVolumeInfo().getTitle())
+                .subtitle(volume.getVolumeInfo().getSubtitle())
+                .authors(volume.getVolumeInfo().getAuthors())
+                .publisher(volume.getVolumeInfo().getPublisher())
+                .publishedDate(volume.getVolumeInfo().getPublishedDate())
+                .pageCount(volume.getVolumeInfo().getPageCount())
+                .averageRating(volume.getVolumeInfo().getAverageRating())
+                .language(volume.getVolumeInfo().getLanguage())
+                .categories(volume.getVolumeInfo().getCategories())
+                .description(volume.getVolumeInfo().getDescription())
+                .thumbnailUrl(volume.getVolumeInfo().getImageLinks().getThumbnail())
+                .pdfLink(volume.getAccessInfo().getPdf().getDownloadLink())
+                .epubLink(volume.getAccessInfo().getEpub().getDownloadLink())
+                .webReaderLink(volume.getAccessInfo().getWebReaderLink())
+                .build();
     }
 }
