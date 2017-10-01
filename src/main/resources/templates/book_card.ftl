@@ -16,8 +16,13 @@
                     </#if>>
                 </a>
             <#if (username??) && (username!="")>
-                <a id="fav-button" class="btn btn-default center-block"><b>+</b><span
-                        class="glyphicon glyphicon-star-empty"></span></a>
+                <a id="fav-button" class="btn btn-default center-block" name="${book.getId()}"><b>+</b><span
+                        class="glyphicon glyphicon-star-empty"></span>
+                <form id="add_fav">
+                    <input id="csrf" name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}">
+                    <input id="googleBookId" name="googleBookId" type="hidden" value="${book.getId()}">
+                </form>
+                </a>
             </#if>
             </div>
             <div class="row">

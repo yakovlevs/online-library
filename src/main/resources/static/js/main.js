@@ -2,6 +2,46 @@ function logout() {
     document.getElementById('logout_form').submit();
 }
 
+/*function addToFavorite() {
+    //document.getElementById('add_fav').submit();
+    ajaxAddFav();
+}*/
+
+function ajaxAddFav(id) {
+    var requestBody ="googleBookId=" + id;
+    console.log(requestBody);
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $.ajax({
+        type: "POST",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: "/add_favorite",
+        data: requestBody,
+        dataType: 'html',
+        cache: false,
+        timeout: 600000,
+        beforeSend: function(request) {
+            request.setRequestHeader(header, token);
+        },
+        success: function (data) {
+/*            $('#content').html(data);
+            $("#btn-search").prop("disabled", false);*/
+            console.log("SUCCESS : ", data);
+/*            console.log("query : ", query);
+            $('#content').show();
+            $('#content-loader').hide();*/
+        },
+        error: function (e) {
+/*            $('#content').html("<h4>Not found</h4>");
+            //console.log("ERROR : ", e);*/
+            console.log("query : ", e);
+/*          $("#btn-search").prop("disabled", false);
+            $('#content').show();
+            $('#content-loader').hide();*/
+        }
+    });
+}
+
 function ajax_submit(p, c) {
     $('#content-loader').show();
     $('#content').hide();
@@ -17,7 +57,7 @@ function ajax_submit(p, c) {
     var download = "downloadable=" + $('#download').is(":checked");
     //console.log("print: ", $('input[name="printradio"]:checked').val());
     var page = "page=" + p;
-    var req = query + "&" + page + "&" + lang + "&" + filter + "&" + download + "&" + print + "&" + onPage+"&"+order;
+    var req = query + "&" + page + "&" + lang + "&" + filter + "&" + download + "&" + print + "&" + onPage + "&" + order;
     console.log("req: " + req);
     $.ajax({
         type: "GET",
@@ -48,6 +88,13 @@ function ajax_submit(p, c) {
 
 $(document).ready(function () {
     console.log("ready!");
+    $(function () {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $(document).ajaxSend(function(e, xhr, options) {
+            xhr.setRequestHeader(header, token);
+        });
+    });
     $("#search-form").submit(function (event) {
         //stop submit the form, we will post it manually.
         event.preventDefault();
@@ -73,6 +120,15 @@ $(document).ready(function () {
         ajax_submit(0, parseInt($(this).text()));
 
     });
-    $('#your-page').show();
+    $(document).on('click', '#fav-button', function () {
+        var cld_form = $(this).children("#add_fav");
+        console.log("cld_form " + cld_form);
+        var id = cld_form.children("#googleBookId").val();
+        console.log("id " + id);
+        var csrf = cld_form.children("#csrf").val();
+        console.log("csrf " + csrf);
+        ajaxAddFav(id);
+    });
+    $('#main-page').show();
     $('#main-loader').hide();
 });

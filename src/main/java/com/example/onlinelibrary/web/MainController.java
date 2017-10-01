@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
@@ -158,16 +159,25 @@ public class MainController {
         return "book";
     }
 
+    @PostMapping("/add_favorite")
+    public String addBookToFavorite(@RequestParam(value = "googleBookId", required = false) String googleBookId) {
+        updateUser();
+        log.info(googleBookId);
+        return "home";
+    }
+
     private void updateUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!authentication.getPrincipal().toString().equals("anonymousUser")) {
-            try {
-                user = (User) authentication.getPrincipal();
-            } catch (ClassCastException ex) {
-                log.info(ex);
+        if (user == null) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (!authentication.getPrincipal().toString().equals("anonymousUser")) {
+                try {
+                    user = (User) authentication.getPrincipal();
+                } catch (ClassCastException ex) {
+                    log.error(ex);
+                }
+            } else {
+                user = null;
             }
-        } else {
-            user = null;
         }
     }
 }
