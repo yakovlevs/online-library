@@ -1,10 +1,9 @@
 package com.example.onlinelibrary.web;
 
-import com.example.onlinelibrary.domain.Book;
-import com.example.onlinelibrary.domain.Query;
-import com.example.onlinelibrary.domain.Role;
-import com.example.onlinelibrary.domain.User;
+import com.example.onlinelibrary.domain.*;
+import com.example.onlinelibrary.persistence.UserDao;
 import com.example.onlinelibrary.services.BookService;
+import com.example.onlinelibrary.services.UserService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
@@ -27,12 +27,14 @@ import static java.util.stream.Collectors.joining;
 @Controller
 @Scope("session")
 public class MainController {
+    @Autowired
+    private UserDao userDao;
     private final BookService bookService;
     private String lastSearchQuery = "";
     private int booksOnPage = 20;
     private int currentPage = 0;
     private int numOfBooks = 0;
-    //private List<Book> lastSearchResult;
+    private List<Book> lastSearchResult;
     private User user;
 
     @Autowired
@@ -127,8 +129,7 @@ public class MainController {
                 .setOrder(order)
                 .setStartIndex(currentPage * booksOnPage)
                 .build());
-
-        //lastSearchResult = result;
+        lastSearchResult = result;
 
         lastSearchQuery = query;
         if (result != null) {
@@ -141,6 +142,8 @@ public class MainController {
         updateUser();
         if (user != null) {
             model.addAttribute("username", user.getUsername());
+            //List<Book> favBookList = user.getFavoriteBooks().stream().map(x -> bookService.findByGoogleId(Query.builder().setTitle(x.getGoogleId()).build())).collect(Collectors.toList());
+            //model.addAttribute("favoriteBooks", favBookList);
             //TODO add fav list
         }
         if (result == null) return "not_found";
@@ -160,10 +163,20 @@ public class MainController {
     }
 
     @PostMapping("/add_favorite")
-    public String addBookToFavorite(@RequestParam(value = "googleBookId", required = false) String googleBookId) {
+    public String addBookToFavorite(
+            @RequestParam(value = "googleBookId", required = false) String googleBookId) {
         updateUser();
+        if (user != null) {
+            Set<Books> favoriteBooks = userDao.findByUserName(user.getUsername()).orElse(new User()).getFavoriteBooks();
+            Books newFavBook = Books.builder().googleId(googleBookId).build();
+            if (!favoriteBooks.contains(newFavBook)) {
+                favoriteBooks.add(newFavBook);
+                user.setFavoriteBooks(favoriteBooks);
+                userDao.save(user);
+            }
+        }
         log.info(googleBookId);
-        return "home";
+        return "alert";
     }
 
     private void updateUser() {

@@ -19,4 +19,19 @@ public class Books {
     @GeneratedValue
     private Long id;
     private String googleId;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Books books = (Books) o;
+        return googleId.equals(books.googleId);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 13;
+        result = 31 * result + googleId.hashCode();
+        return result;
+    }
 }

@@ -7,8 +7,8 @@ function logout() {
     ajaxAddFav();
 }*/
 
-function ajaxAddFav(id) {
-    var requestBody ="googleBookId=" + id;
+function ajaxAddFav(id, obj) {
+    var requestBody = "googleBookId=" + id;
     console.log(requestBody);
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
@@ -20,24 +20,25 @@ function ajaxAddFav(id) {
         dataType: 'html',
         cache: false,
         timeout: 600000,
-        beforeSend: function(request) {
+        beforeSend: function (request) {
             request.setRequestHeader(header, token);
         },
         success: function (data) {
-/*            $('#content').html(data);
-            $("#btn-search").prop("disabled", false);*/
+            //$('#fav-alert').html(data);
+            obj.parent().html(data);
+            //$("#btn-search").prop("disabled", false);
             console.log("SUCCESS : ", data);
-/*            console.log("query : ", query);
-            $('#content').show();
-            $('#content-loader').hide();*/
+            /*            console.log("query : ", query);
+                        $('#content').show();
+                        $('#content-loader').hide();*/
         },
         error: function (e) {
-/*            $('#content').html("<h4>Not found</h4>");
-            //console.log("ERROR : ", e);*/
+            /*            $('#content').html("<h4>Not found</h4>");
+                        //console.log("ERROR : ", e);*/
             console.log("query : ", e);
-/*          $("#btn-search").prop("disabled", false);
-            $('#content').show();
-            $('#content-loader').hide();*/
+            /*          $("#btn-search").prop("disabled", false);
+                        $('#content').show();
+                        $('#content-loader').hide();*/
         }
     });
 }
@@ -53,7 +54,6 @@ function ajax_submit(p, c) {
     var filter = "filter=" + $('input[name="filtradio"]:checked').val();
     var print = "print=" + $('input[name="printradio"]:checked').val();
     var onPage = "onPage=" + c;
-
     var download = "downloadable=" + $('#download').is(":checked");
     //console.log("print: ", $('input[name="printradio"]:checked').val());
     var page = "page=" + p;
@@ -88,13 +88,6 @@ function ajax_submit(p, c) {
 
 $(document).ready(function () {
     console.log("ready!");
-    $(function () {
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
-        $(document).ajaxSend(function(e, xhr, options) {
-            xhr.setRequestHeader(header, token);
-        });
-    });
     $("#search-form").submit(function (event) {
         //stop submit the form, we will post it manually.
         event.preventDefault();
@@ -120,14 +113,13 @@ $(document).ready(function () {
         ajax_submit(0, parseInt($(this).text()));
 
     });
-    $(document).on('click', '#fav-button', function () {
+    $(document).on('click', '#fav-button', function (e) {
+        //e.preventDefault();
+        //$(this).prop('disabled', true);
         var cld_form = $(this).children("#add_fav");
-        console.log("cld_form " + cld_form);
         var id = cld_form.children("#googleBookId").val();
-        console.log("id " + id);
-        var csrf = cld_form.children("#csrf").val();
-        console.log("csrf " + csrf);
-        ajaxAddFav(id);
+        ajaxAddFav(id, $(this));
+
     });
     $('#main-page').show();
     $('#main-loader').hide();
