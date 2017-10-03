@@ -2,11 +2,6 @@ function logout() {
     document.getElementById('logout_form').submit();
 }
 
-/*function addToFavorite() {
-    //document.getElementById('add_fav').submit();
-    ajaxAddFav();
-}*/
-
 function ajaxAddFav(id, obj) {
     var requestBody = "googleBookId=" + id;
     console.log(requestBody);
@@ -24,29 +19,42 @@ function ajaxAddFav(id, obj) {
             request.setRequestHeader(header, token);
         },
         success: function (data) {
-            //$('#fav-alert').html(data);
             obj.parent().html(data);
-            //$("#btn-search").prop("disabled", false);
-            console.log("SUCCESS : ", data);
-            /*            console.log("query : ", query);
-                        $('#content').show();
-                        $('#content-loader').hide();*/
+            console.log("SUCCESS: ", data);
         },
         error: function (e) {
-            /*            $('#content').html("<h4>Not found</h4>");
-                        //console.log("ERROR : ", e);*/
-            console.log("query : ", e);
-            /*          $("#btn-search").prop("disabled", false);
-                        $('#content').show();
-                        $('#content-loader').hide();*/
+            console.log("ERROR: ", e);
         }
     });
 }
-
+function ajaxRemoveFav(id, obj) {
+    var requestBody = "googleBookId=" + id;
+    console.log(requestBody);
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $.ajax({
+        type: "POST",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: "/remove_favorite",
+        data: requestBody,
+        dataType: 'html',
+        cache: false,
+        timeout: 600000,
+        beforeSend: function (request) {
+            request.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            obj.parent().html(data);
+            console.log("SUCCESS: ", data);
+        },
+        error: function (e) {
+            console.log("ERROR: ", e);
+        }
+    });
+}
 function ajax_submit(p, c) {
     $('#content-loader').show();
     $('#content').hide();
-
     $("#btn-search").prop("disabled", true);
     var query = "query=" + $("#query").val();
     var lang = "lang=" + $('input[name="langradio"]:checked').val();
@@ -55,7 +63,6 @@ function ajax_submit(p, c) {
     var print = "print=" + $('input[name="printradio"]:checked').val();
     var onPage = "onPage=" + c;
     var download = "downloadable=" + $('#download').is(":checked");
-    //console.log("print: ", $('input[name="printradio"]:checked').val());
     var page = "page=" + p;
     var req = query + "&" + page + "&" + lang + "&" + filter + "&" + download + "&" + print + "&" + onPage + "&" + order;
     console.log("req: " + req);
@@ -89,7 +96,6 @@ function ajax_submit(p, c) {
 $(document).ready(function () {
     console.log("ready!");
     $("#search-form").submit(function (event) {
-        //stop submit the form, we will post it manually.
         event.preventDefault();
         ajax_submit(0);
     });
@@ -113,13 +119,15 @@ $(document).ready(function () {
         ajax_submit(0, parseInt($(this).text()));
 
     });
-    $(document).on('click', '#fav-button', function (e) {
-        //e.preventDefault();
-        //$(this).prop('disabled', true);
+    $(document).on('click', '#add-fav-button', function (e) {
         var cld_form = $(this).children("#add_fav");
         var id = cld_form.children("#googleBookId").val();
         ajaxAddFav(id, $(this));
-
+    });
+    $(document).on('click', '#remove-fav-button', function (e) {
+        var cld_form = $(this).children("#add_fav");
+        var id = cld_form.children("#googleBookId").val();
+        ajaxRemoveFav(id, $(this));
     });
     $('#main-page').show();
     $('#main-loader').hide();

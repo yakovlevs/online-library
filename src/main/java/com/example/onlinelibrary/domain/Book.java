@@ -25,4 +25,5 @@ public class Book {
     private String pdfLink;
     private String epubLink;
     private String webReaderLink;
+    private boolean favorite;
 }

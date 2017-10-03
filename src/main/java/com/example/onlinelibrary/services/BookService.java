@@ -16,7 +16,7 @@ public class BookService {
     @Autowired
     private GoogleBooksApiClient bookApiClient;
 
-    @Cacheable("books")
+
     public List<Book> findByTitle(Query query) {
         List<GoogleBook> result = bookApiClient.executeQuery(query);
         if (result != null) return result.stream().map(this::convertGoogleBook).collect(Collectors.toList());

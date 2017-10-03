@@ -17,12 +17,22 @@
                 </a>
             <#if (username??) && (username!="")>
                 <div id="fav-alert">
-                    <a id="fav-button" class="btn btn-primary fav-btn center-block" name="${book.getId()}"><span
-                            class="glyphicon glyphicon-plus"></span>
-                        <form id="add_fav">
-                            <input id="csrf" name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}">
-                            <input id="googleBookId" name="googleBookId" type="hidden" value="${book.getId()}">
-                        </form>
+
+                        <#if book.isFavorite()>
+                        <a id="remove-fav-button" class="btn btn-danger fav-btn center-block" name="${book.getId()}">
+                            <span class="glyphicon glyphicon-minus"></span>
+                            <form id="add_fav">
+                                <input id="csrf" name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}">
+                                <input id="googleBookId" name="googleBookId" type="hidden" value="${book.getId()}">
+                            </form>
+                        <#else>
+                        <a id="add-fav-button" class="btn btn-primary fav-btn center-block" name="${book.getId()}">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            <form id="add_fav">
+                                <input id="csrf" name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}">
+                                <input id="googleBookId" name="googleBookId" type="hidden" value="${book.getId()}">
+                            </form>
+                        </#if>
                     </a>
                 </div>
             </#if>

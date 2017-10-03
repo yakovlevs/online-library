@@ -51,11 +51,12 @@ public class MainController {
         model.addAttribute("numOfBooks", numOfBooks);
         if (user != null) model.addAttribute("username", user.getUsername());
         if (!lastSearchQuery.equals("")) {
-            model.addAttribute("searchResult", bookService.findByTitle(Query.builder()
+            List<Book> result = bookService.findByTitle(Query.builder()
                     .setTitle(lastSearchQuery)
                     .setMaxResult(booksOnPage)
                     .setStartIndex(booksOnPage * currentPage)
-                    .build()));
+                    .build());
+            model.addAttribute("searchResult", checkFavorites(result, user));
         } else {
             model.addAttribute("searchResult", new ArrayList<Book>());
         }
@@ -68,18 +69,17 @@ public class MainController {
         updateUser();
         model.addAttribute("username", "");
         model.addAttribute("roles", "");
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (user != null) {
             List<Book> favoriteBooks = user.getFavoriteBooks()
-                    .stream().map(x -> bookService.findByTitle(
+                    .stream().map(x -> bookService.findByGoogleId(
                             Query.builder()
                                     .setTitle(x.getGoogleId())
                                     .setStartIndex(0)
                                     .setMaxResult(1)
-                                    .build()).get(0)).collect(Collectors.toList());
+                                    .build())).collect(Collectors.toList());
             model.addAttribute("username", user.getUsername());
             model.addAttribute("roles", user.getAuthorities().stream().map(Role::getAuthority).collect(joining(",")));
-            model.addAttribute("favorites", favoriteBooks);
+            model.addAttribute("favorites", checkFavorites(favoriteBooks, user));
         }
         return "user";
     }
@@ -129,26 +129,26 @@ public class MainController {
                 .setOrder(order)
                 .setStartIndex(currentPage * booksOnPage)
                 .build());
-        lastSearchResult = result;
 
+        lastSearchResult = result;
         lastSearchQuery = query;
+
+        updateUser();
         if (result != null) {
-            model.addAttribute("searchResult", result);
             log.info("user request: " + query + "; page: " + page);
             model.addAttribute("booksOnPage", booksOnPage);
             model.addAttribute("numOfBooks", numOfBooks);
             model.addAttribute("currentPage", currentPage);
+            model.addAttribute("searchResult", checkFavorites(result, user));
         }
-        updateUser();
+
         if (user != null) {
             model.addAttribute("username", user.getUsername());
-            //List<Book> favBookList = user.getFavoriteBooks().stream().map(x -> bookService.findByGoogleId(Query.builder().setTitle(x.getGoogleId()).build())).collect(Collectors.toList());
-            //model.addAttribute("favoriteBooks", favBookList);
-            //TODO add fav list
         }
         if (result == null) return "not_found";
         return "content";
     }
+
 
     @GetMapping("/{id}")
     public String getBook(@PathVariable String id, Model model) {
@@ -175,7 +175,24 @@ public class MainController {
                 userDao.save(user);
             }
         }
-        log.info(googleBookId);
+        log.info("book with id " + googleBookId + " added to fav.");
+        return "alert";
+    }
+
+    @PostMapping("/remove_favorite")
+    public String removeBookFromFavorite(
+            @RequestParam(value = "googleBookId", required = false) String googleBookId) {
+        updateUser();
+        if (user != null) {
+            Set<Books> favoriteBooks = userDao.findByUserName(user.getUsername()).orElse(new User()).getFavoriteBooks();
+            Books newFavBook = Books.builder().googleId(googleBookId).build();
+            if (favoriteBooks.contains(newFavBook)) {
+                favoriteBooks.remove(newFavBook);
+                user.setFavoriteBooks(favoriteBooks);
+                userDao.save(user);
+            }
+        }
+        log.info("book with id " + googleBookId + " removed from fav.");
         return "alert";
     }
 
@@ -185,6 +202,8 @@ public class MainController {
             if (!authentication.getPrincipal().toString().equals("anonymousUser")) {
                 try {
                     user = (User) authentication.getPrincipal();
+                    user = userDao.findByUserName(user.getUsername()).orElse(null);
+
                 } catch (ClassCastException ex) {
                     log.error(ex);
                 }
@@ -192,5 +211,14 @@ public class MainController {
                 user = null;
             }
         }
+    }
+
+    private List<Book> checkFavorites(List<Book> bookList, User user) {
+        if ((user != null) && (bookList != null)) {
+            bookList = bookList.stream().peek(b -> b.setFavorite(
+                    user.getFavoriteBooks().stream().anyMatch(f -> f.getGoogleId().equals(b.getId()))))
+                    .collect(Collectors.toList());
+        }
+        return bookList;
     }
 }

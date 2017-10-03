@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+
 @Log4j
 @Component
 public class GoogleBooksApiClient {
@@ -24,6 +25,7 @@ public class GoogleBooksApiClient {
     @Value("${application.googleBooksApi.AppKey}")
     private String API_KEY;
 
+    @Cacheable("books")
     public List<GoogleBook> executeQuery(Query query) {
         log.info("API request:" + query.getFullQuery());
         GoogleBooksApiResponse result = restTemplate().getForObject(prepareUrl(query), GoogleBooksApiResponse.class);
