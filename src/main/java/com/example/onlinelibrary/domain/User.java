@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -30,6 +29,6 @@ public class User implements UserDetails {
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
     private boolean enabled;
-    @ManyToMany(targetEntity = Books.class, fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    private Set<Books> favoriteBooks;
+    @ManyToMany(targetEntity = FavBook.class, fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    private Set<FavBook> favoriteBooks;
 }

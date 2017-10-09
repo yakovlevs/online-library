@@ -29,7 +29,7 @@ public class ApplicationTest {
     public void loginWithValidUserThenAuthenticated() throws Exception {
         SecurityMockMvcRequestBuilders.FormLoginRequestBuilder login = formLogin()
                 .user("user")
-                .password("password");
+                .password("user");
         mockMvc.perform(login)
                 .andExpect(authenticated().withUsername("user"));
     }
@@ -38,7 +38,7 @@ public class ApplicationTest {
     public void accessNotExistedResourceAuthenticatedThenRedirectsToError() throws Exception {
         SecurityMockMvcRequestBuilders.FormLoginRequestBuilder login = formLogin()
                 .user("user")
-                .password("password");
+                .password("user");
 
         mockMvc.perform(login)
                 .andExpect(authenticated().withUsername("user"));

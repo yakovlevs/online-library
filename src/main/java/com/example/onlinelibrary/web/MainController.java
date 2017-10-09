@@ -3,7 +3,6 @@ package com.example.onlinelibrary.web;
 import com.example.onlinelibrary.domain.*;
 import com.example.onlinelibrary.persistence.UserDao;
 import com.example.onlinelibrary.services.BookService;
-import com.example.onlinelibrary.services.UserService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -164,8 +163,8 @@ public class MainController {
             @RequestParam(value = "googleBookId", required = false) String googleBookId) {
         updateUser();
         if (user != null) {
-            Set<Books> favoriteBooks = userDao.findByUserName(user.getUsername()).orElse(new User()).getFavoriteBooks();
-            Books newFavBook = Books.builder().googleId(googleBookId).build();
+            Set<FavBook> favoriteBooks = userDao.findByUserName(user.getUsername()).orElse(new User()).getFavoriteBooks();
+            FavBook newFavBook = FavBook.builder().googleId(googleBookId).build();
             if (!favoriteBooks.contains(newFavBook)) {
                 favoriteBooks.add(newFavBook);
                 user.setFavoriteBooks(favoriteBooks);
@@ -181,8 +180,8 @@ public class MainController {
             @RequestParam(value = "googleBookId", required = false) String googleBookId) {
         updateUser();
         if (user != null) {
-            Set<Books> favoriteBooks = userDao.findByUserName(user.getUsername()).orElse(new User()).getFavoriteBooks();
-            Books newFavBook = Books.builder().googleId(googleBookId).build();
+            Set<FavBook> favoriteBooks = userDao.findByUserName(user.getUsername()).orElse(new User()).getFavoriteBooks();
+            FavBook newFavBook = FavBook.builder().googleId(googleBookId).build();
             if (favoriteBooks.contains(newFavBook)) {
                 favoriteBooks.remove(newFavBook);
                 user.setFavoriteBooks(favoriteBooks);

@@ -1,6 +1,6 @@
 package com.example.onlinelibrary.services;
 
-import com.example.onlinelibrary.domain.Books;
+import com.example.onlinelibrary.domain.FavBook;
 import com.example.onlinelibrary.domain.Role;
 import com.example.onlinelibrary.domain.User;
 import com.example.onlinelibrary.persistence.UserDao;
@@ -28,13 +28,18 @@ public class UserService implements UserDetailsService {
         if (!userDao.findByUserName("user").isPresent()) {
             userDao.save(User.builder()
                     .username("user")
-                    .password(new BCryptPasswordEncoder().encode("password"))
+                    .password(new BCryptPasswordEncoder().encode("user"))
                     .authorities(ImmutableList.of(Role.USER))
                     .accountNonExpired(true)
                     .accountNonLocked(true)
                     .credentialsNonExpired(true)
                     .enabled(true)
-                    .favoriteBooks(new HashSet<>())
+                    .favoriteBooks(new HashSet<>(
+                            Arrays.asList(
+                                    FavBook.builder().googleId("itaEAgAAQBAJ").build(),
+                                    FavBook.builder().googleId("twKQ7zpid2UC").build(),
+                                    FavBook.builder().googleId("eavbBQAAQBAJ").build(),
+                                    FavBook.builder().googleId("jmwUBAAAQBAJ").build())))
                     .build());
             userDao.save(User.builder()
                     .username("admin")
@@ -46,10 +51,10 @@ public class UserService implements UserDetailsService {
                     .enabled(true)
                     .favoriteBooks(new HashSet<>(
                             Arrays.asList(
-                                    Books.builder().googleId("fbM1DwAAQBAJ").build(),
-                                    Books.builder().googleId("twKQ7zpid2UC").build(),
-                                    Books.builder().googleId("eavbBQAAQBAJ").build(),
-                                    Books.builder().googleId("5NomkK4EV68C").build())))
+                                    FavBook.builder().googleId("fbM1DwAAQBAJ").build(),
+                                    FavBook.builder().googleId("twKQ7zpid2UC").build(),
+                                    FavBook.builder().googleId("eavbBQAAQBAJ").build(),
+                                    FavBook.builder().googleId("5NomkK4EV68C").build())))
                     .build());
             userDao.save(User.builder()
                     .username("power")

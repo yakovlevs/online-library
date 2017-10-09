@@ -14,7 +14,7 @@ import javax.persistence.Id;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Books {
+public class FavBook {
     @Id
     @GeneratedValue
     private Long id;
@@ -24,7 +24,7 @@ public class Books {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Books books = (Books) o;
+        FavBook books = (FavBook) o;
         return googleId.equals(books.googleId);
     }
 
