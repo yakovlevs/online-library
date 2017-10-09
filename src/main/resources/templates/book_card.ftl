@@ -1,13 +1,13 @@
 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
     <div class="panel panel-default book-card">
         <div class="panel-heading">
-            <h5><a href="/${book.getId()}"><b
+            <h5><a href="book/${book.getId()}"><b
                     class="hide-title-overflow"> ${book.getTitle()} </b></a></h5>
             <p class="hide-title-overflow"> ${book.getSubtitle()}&zwnj; </p>
         </div>
         <div class="panel-body">
             <div class="row">
-                <a href="/${book.getId()}">
+                <a href="book/${book.getId()}">
                     <img class="book-thumbnail img-rounded img-bordered center-block"
                     <#if book.getThumbnailUrl()?? && book.getThumbnailUrl() !="">
                          src="${book.getThumbnailUrl()}"

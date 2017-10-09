@@ -24,10 +24,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                //.antMatchers("/", "/home").permitAll()
+                .antMatchers("/", "/home","/h2").permitAll()
                 .antMatchers("/user").authenticated()
                 //.anyRequest().authenticated()
                 .and()
+                //.csrf().disable()
+                //.headers().frameOptions().disable()
+                //.and()
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
