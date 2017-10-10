@@ -25,7 +25,7 @@ public class GoogleBooksApiClient {
     @Value("${application.googleBooksApi.AppKey}")
     private String API_KEY;
 
-    public List<GoogleBook> executeQuery(Query query) {
+    public List<GoogleBook> executeQuery(@NonNull Query query) {
         log.info("API request:" + query.getFullQuery());
         GoogleBooksApiResponse result = restTemplate().getForObject(prepareUrl(query), GoogleBooksApiResponse.class);
         return result.getItems();

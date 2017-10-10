@@ -52,32 +52,12 @@ public class MainController {
                     .setMaxResult(booksOnPage)
                     .setStartIndex(booksOnPage * currentPage)
                     .build());
-            model.addAttribute("searchResult", checkFavorites(result, user));
+            model.addAttribute("searchResult", updateBookStatus(result, user));
         } else {
             model.addAttribute("searchResult", new ArrayList<Book>());
         }
         model.addAttribute("currentPage", currentPage);
         return "home";
-    }
-
-    @GetMapping("/user")
-    public String getHello(Model model) {
-        updateUser();
-        model.addAttribute("username", "");
-        model.addAttribute("roles", "");
-        if (user != null) {
-            List<Book> favoriteBooks = user.getFavoriteBooks()
-                    .stream().map(x -> bookService.findByGoogleId(
-                            Query.builder()
-                                    .setTitle(x.getGoogleId())
-                                    .setStartIndex(0)
-                                    .setMaxResult(1)
-                                    .build())).collect(Collectors.toList());
-            model.addAttribute("username", user.getUsername());
-            model.addAttribute("roles", user.getAuthorities().stream().map(Role::getAuthority).collect(joining(",")));
-            model.addAttribute("favorites", checkFavorites(favoriteBooks, user));
-        }
-        return "user";
     }
 
     @GetMapping("/login")
@@ -135,7 +115,7 @@ public class MainController {
             model.addAttribute("booksOnPage", booksOnPage);
             model.addAttribute("numOfBooks", numOfBooks);
             model.addAttribute("currentPage", currentPage);
-            model.addAttribute("searchResult", checkFavorites(result, user));
+            model.addAttribute("searchResult", updateBookStatus(result, user));
         }
 
         if (user != null) {
@@ -156,6 +136,20 @@ public class MainController {
                         .build());
         model.addAttribute("book", book);
         return "book";
+    }
+
+    @GetMapping("/user")
+    public String getHello(Model model) {
+        updateUser();
+        model.addAttribute("username", "");
+        model.addAttribute("roles", "");
+        if (user != null) {
+            model.addAttribute("username", user.getUsername());
+            model.addAttribute("roles", user.getAuthorities().stream().map(Role::getAuthority).collect(joining(",")));
+            getFavoritesBook(model);
+            getPurchasedBooks(model);
+        }
+        return "user";
     }
 
     @PostMapping("/add_favorite")
@@ -192,6 +186,40 @@ public class MainController {
         return "alert";
     }
 
+    @GetMapping("/user/favorites")
+    public String getFavoritesBook(Model model) {
+        updateUser();
+        if (user != null) {
+            List<Book> favoriteBooks = user.getFavoriteBooks()
+                    .stream().map(x -> bookService.findByGoogleId(
+                            Query.builder()
+                                    .setTitle(x.getGoogleId())
+                                    .setStartIndex(0)
+                                    .setMaxResult(1)
+                                    .build())).collect(Collectors.toList());
+            model.addAttribute("favorites", updateBookStatus(favoriteBooks, user));
+            model.addAttribute("username", user.getUsername());
+        }
+        return "user_fav";
+    }
+
+    @GetMapping("/user/purchased")
+    public String getPurchasedBooks(Model model) {
+        updateUser();
+        if (user != null) {
+            List<Book> purchasedBooks = user.getPurchasedBooks()
+                    .stream().map(x -> bookService.findByGoogleId(
+                            Query.builder()
+                                    .setTitle(x.getGoogleId())
+                                    .setStartIndex(0)
+                                    .setMaxResult(1)
+                                    .build())).collect(Collectors.toList());
+            model.addAttribute("purchased", updateBookStatus(purchasedBooks, user));
+            model.addAttribute("username", user.getUsername());
+        }
+        return "user_purchased";
+    }
+
     private void updateUser() {
         if (user == null) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -199,7 +227,6 @@ public class MainController {
                 try {
                     user = (User) authentication.getPrincipal();
                     user = userDao.findByUserName(user.getUsername()).orElse(null);
-
                 } catch (ClassCastException ex) {
                     log.error(ex);
                 }
@@ -209,11 +236,18 @@ public class MainController {
         }
     }
 
-    private List<Book> checkFavorites(List<Book> bookList, User user) {
+    private List<Book> updateBookStatus(List<Book> bookList, User user) {
         if ((user != null) && (bookList != null)) {
-            bookList = bookList.stream().peek(b -> b.setFavorite(
-                    user.getFavoriteBooks().stream().anyMatch(f -> f.getGoogleId().equals(b.getId()))))
+            bookList = bookList.stream().peek(b -> {
+                b.setFavorite(
+                        user.getFavoriteBooks().stream().anyMatch(f -> f.getGoogleId().equals(b.getId())));
+                b.setPurchased(
+                        user.getPurchasedBooks().stream().anyMatch(f -> f.getGoogleId().equals(b.getId())));
+            })
                     .collect(Collectors.toList());
+            /*bookList = bookList.stream().peek(b -> b.setPurchased(
+                    user.getPurchasedBooks().stream().anyMatch(f -> f.getGoogleId().equals(b.getId()))))
+                    .collect(Collectors.toList());*/
         }
         return bookList;
     }

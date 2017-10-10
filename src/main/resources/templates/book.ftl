@@ -18,7 +18,7 @@
         <div class="container-fluid col-lg-12">
             <div class="panel panel-default book-card">
                 <div class="panel-heading">
-                    <h5><a href="/${book.getId()}"><b class="hide-title-overflow"> ${book.getTitle()} </b></a></h5>
+                    <h5><a href="/${book.getId()}"><b class="hide-title-overflow">${book.getTitle()}</b></a></h5>
                     <p class="hide-title-overflow"> ${book.getSubtitle()}&zwnj; </p>
                 </div>
                 <div class="panel-body">

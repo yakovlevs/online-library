@@ -4,6 +4,7 @@ import com.example.onlinelibrary.domain.Book;
 import com.example.onlinelibrary.domain.Query;
 import com.example.onlinelibrary.gbapi.GoogleBooksApiClient;
 import com.example.onlinelibrary.gbapi.gbook.*;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
@@ -27,7 +28,7 @@ public class BookService {
         return convertGoogleBook(bookApiClient.executeQuery(query).get(0));
     }
 
-    private Book convertGoogleBook(GoogleBook volume) {
+    private Book convertGoogleBook(@NonNull GoogleBook volume) {
         return Book.builder()
                 .id(volume.getId())
                 .title(volume.getVolumeInfo().getTitle())

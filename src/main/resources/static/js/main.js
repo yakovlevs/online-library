@@ -27,6 +27,17 @@ function ajaxAddFav(id, obj) {
         }
     });
 }
+
+function favBadge(obj, b) {
+    var count = parseInt(obj.text());
+    console.log(count);
+    if (b) {
+        obj.text(count + 1);
+    } else {
+        obj.text(count - 1);
+    }
+}
+
 function ajaxRemoveFav(id, obj) {
     var requestBody = "googleBookId=" + id;
     console.log(requestBody);
@@ -52,6 +63,29 @@ function ajaxRemoveFav(id, obj) {
         }
     });
 }
+
+function ajaxGetUserBooks(url) {
+    $.ajax({
+        type: "GET",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: url,
+        data: "",
+        dataType: 'html',
+        cache: false,
+        timeout: 600000,
+        success: function (data) {
+            $('#user-fav').html(data);
+            //console.log("SUCCESS : ", data);
+            console.log("query : ", url);
+        },
+        error: function (e) {
+            $('#user-fav').html("<h4>Not found</h4>");
+            //console.log("ERROR : ", e);
+            console.log("query : ", url);
+        }
+    });
+}
+
 function ajax_submit(p, c) {
     $('#content-loader').show();
     $('#content').hide();
@@ -122,12 +156,28 @@ $(document).ready(function () {
     $(document).on('click', '#add-fav-button', function (e) {
         var cld_form = $(this).children("#add_fav");
         var id = cld_form.children("#googleBookId").val();
+        favBadge($('#fav-badge'), true);
         ajaxAddFav(id, $(this));
     });
     $(document).on('click', '#remove-fav-button', function (e) {
         var cld_form = $(this).children("#add_fav");
         var id = cld_form.children("#googleBookId").val();
+        favBadge($('#fav-badge'), false);
         ajaxRemoveFav(id, $(this));
+    });
+    $(document).on('click', '#fav-tab', function () {
+        console.log("click: " + $(this).text());
+        $('#purchased-tab').parent().removeClass("active");
+        $(this).parent().addClass("active");
+        ajaxGetUserBooks("/user/favorites");
+
+    });
+    $(document).on('click', '#purchased-tab', function () {
+        console.log("click: " + $(this).text());
+        $('#fav-tab').parent().removeClass("active");
+        $(this).parent().addClass("active");
+        ajaxGetUserBooks("/user/purchased");
+
     });
     $('#main-page').show();
     $('#main-loader').hide();

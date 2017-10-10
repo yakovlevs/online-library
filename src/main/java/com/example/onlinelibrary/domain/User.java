@@ -29,6 +29,10 @@ public class User implements UserDetails {
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
     private boolean enabled;
-    @ManyToMany(targetEntity = FavBook.class, fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    @ManyToMany(targetEntity = FavBook.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<FavBook> favoriteBooks;
+    @ManyToMany(targetEntity = PurchasedBook.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<PurchasedBook> purchasedBooks;
+
+
 }

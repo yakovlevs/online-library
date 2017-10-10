@@ -26,4 +26,5 @@ public class Book {
     private String epubLink;
     private String webReaderLink;
     private boolean favorite;
+    private boolean purchased;
 }

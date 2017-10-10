@@ -1,8 +1,13 @@
 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-    <div class="panel panel-default book-card">
+    <div <#if book.isPurchased()>
+            class="panel panel-success book-card"
+    <#else>
+            class="panel panel-primary book-card"
+    </#if>>
         <div class="panel-heading">
-            <h5><a href="book/${book.getId()}"><b
-                    class="hide-title-overflow"> ${book.getTitle()} </b></a></h5>
+            <p class="hide-title-overflow">
+                <a class="lead" href="book/${book.getId()}" style="color: white">${book.getTitle()}</a>
+            </p>
             <p class="hide-title-overflow"> ${book.getSubtitle()}&zwnj; </p>
         </div>
         <div class="panel-body">
@@ -17,23 +22,22 @@
                 </a>
             <#if (username??) && (username!="")>
                 <div id="fav-alert">
-
-                        <#if book.isFavorite()>
-                        <a id="remove-fav-button" class="btn btn-danger fav-btn center-block" name="${book.getId()}">
-                            <span class="glyphicon glyphicon-minus"></span>
-                            <form id="add_fav">
-                                <input id="csrf" name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}">
-                                <input id="googleBookId" name="googleBookId" type="hidden" value="${book.getId()}">
-                            </form>
-                        <#else>
-                        <a id="add-fav-button" class="btn btn-primary fav-btn center-block" name="${book.getId()}">
-                            <span class="glyphicon glyphicon-plus"></span>
-                            <form id="add_fav">
-                                <input id="csrf" name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}">
-                                <input id="googleBookId" name="googleBookId" type="hidden" value="${book.getId()}">
-                            </form>
-                        </#if>
-                    </a>
+                    <#if book.isFavorite()>
+                    <a id="remove-fav-button" class="btn btn-danger fav-btn center-block" name="${book.getId()}">
+                        <span class="glyphicon glyphicon-minus"></span>
+                        <form id="add_fav">
+                            <input id="csrf" name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}">
+                            <input id="googleBookId" name="googleBookId" type="hidden" value="${book.getId()}">
+                        </form>
+                    <#else>
+                    <a id="add-fav-button" class="btn btn-primary fav-btn center-block" name="${book.getId()}">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        <form id="add_fav">
+                            <input id="csrf" name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}">
+                            <input id="googleBookId" name="googleBookId" type="hidden" value="${book.getId()}">
+                        </form>
+                    </#if>
+                </a>
                 </div>
             </#if>
             </div>

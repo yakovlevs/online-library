@@ -1,6 +1,7 @@
 package com.example.onlinelibrary.services;
 
 import com.example.onlinelibrary.domain.FavBook;
+import com.example.onlinelibrary.domain.PurchasedBook;
 import com.example.onlinelibrary.domain.Role;
 import com.example.onlinelibrary.domain.User;
 import com.example.onlinelibrary.persistence.UserDao;
@@ -40,6 +41,11 @@ public class UserService implements UserDetailsService {
                                     FavBook.builder().googleId("twKQ7zpid2UC").build(),
                                     FavBook.builder().googleId("eavbBQAAQBAJ").build(),
                                     FavBook.builder().googleId("jmwUBAAAQBAJ").build())))
+                    .purchasedBooks(new HashSet<>(
+                            Arrays.asList(
+                                    PurchasedBook.builder().googleId("itaEAgAAQBAJ").build(),
+                                    PurchasedBook.builder().googleId("twKQ7zpid2UC").build(),
+                                    PurchasedBook.builder().googleId("jmwUBAAAQBAJ").build())))
                     .build());
             userDao.save(User.builder()
                     .username("admin")
@@ -55,6 +61,10 @@ public class UserService implements UserDetailsService {
                                     FavBook.builder().googleId("twKQ7zpid2UC").build(),
                                     FavBook.builder().googleId("eavbBQAAQBAJ").build(),
                                     FavBook.builder().googleId("5NomkK4EV68C").build())))
+                    .purchasedBooks(new HashSet<>(
+                            Arrays.asList(
+                                    PurchasedBook.builder().googleId("eavbBQAAQBAJ").build(),
+                                    PurchasedBook.builder().googleId("5NomkK4EV68C").build())))
                     .build());
             userDao.save(User.builder()
                     .username("power")
