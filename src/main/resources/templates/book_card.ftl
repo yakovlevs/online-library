@@ -1,9 +1,15 @@
 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-    <div <#if book.isPurchased()>
-            class="panel panel-success book-card"
-    <#else>
-            class="panel panel-primary book-card"
+    <div
+    <#if (username??) && (username!="")>
+        <#if book.isPurchased()>
+                class="panel panel-success book-card"
+        <#else>
+                class="panel panel-primary book-card"
+        </#if>
+    <#else >
+                class="panel panel-primary book-card-small"
     </#if>>
+
         <div class="panel-heading">
             <p class="hide-title-overflow">
                 <a class="lead" href="book/${book.getId()}" style="color: white">${book.getTitle()}</a>
@@ -45,14 +51,10 @@
                     <div class="col-lg-6">
                         <#if book.isPurchased()>
                             <a id="buy-button" class="btn btn-primary pull-left disabled">Owner </a>
+                        <#elseif book.isSaleability()>
+                            <#include "buy.ftl">
                         <#else>
-                            <a id="buy-button" class="btn btn-primary pull-left">Buy
-                                <span class=""></span>
-                                <form id="buy-form">
-                                    <input id="csrf" name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}">
-                                    <input id="googleBookId" name="googleBookId" type="hidden" value="${book.getId()}">
-                                </form>
-                            </a>
+                            <a id="buy-button" class="btn btn-primary pull-left disabled">Buy </a>
                         </#if>
                     </div>
                 </div>
@@ -104,7 +106,7 @@
                     <#else>
                         Category:
                     </#if>
-                                    </span>
+                    </span>
                     <#list  book.getCategories() as categorie>
                     ${categorie}<#if categorie?is_last>. <#else>, </#if>
                     </#list>
@@ -112,6 +114,9 @@
                 <#if book.isSaleability()>
                     <p class="hide-description-overflow hide-title-overflow"><span
                             class="text-primary">Price:</span> ${book.getPrice()}  ${book.getCurrencyCode()}</p>
+                <#else >
+                    <p class="hide-description-overflow hide-title-overflow"><span
+                            class="text-primary">Price:</span> Not for sale.</p>
                 </#if>
                     <p class="hide-description-overflow hide-title-overflow"><span
                             class="text-primary">Publisher:</span> ${book.getPublisher()}</p>

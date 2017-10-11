@@ -7,7 +7,11 @@ body {
 }
 
 .book-card {
-    height: 760px;
+     height: 760px;
+ }
+
+.book-card-small {
+    height: 730px;
 }
 
 .navbar {

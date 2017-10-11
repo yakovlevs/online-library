@@ -6,14 +6,19 @@ import com.example.onlinelibrary.gbapi.GoogleBooksApiClient;
 import com.example.onlinelibrary.gbapi.gbook.*;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class BookService {
+
     @Autowired
     private GoogleBooksApiClient bookApiClient;
 
@@ -23,6 +28,7 @@ public class BookService {
         if (result != null) return result.stream().map(this::convertGoogleBook).collect(Collectors.toList());
         return null;
     }
+
     @Cacheable("singleBook")
     public Book findByGoogleId(Query query) {
         return convertGoogleBook(bookApiClient.executeQuery(query).get(0));
@@ -45,9 +51,13 @@ public class BookService {
                 .pdfLink(volume.getAccessInfo().getPdf().getDownloadLink())
                 .epubLink(volume.getAccessInfo().getEpub().getDownloadLink())
                 .webReaderLink(volume.getAccessInfo().getWebReaderLink())
-                .saleability(!volume.getSaleInfo().getSaleability().equals(""))
+                .saleability(volume.getSaleInfo().getSaleability().equals("FOR_SALE"))
                 .price(volume.getSaleInfo().getRetailPrice().getAmount())
                 .currencyCode(volume.getSaleInfo().getRetailPrice().getCurrencyCode())
+                .signatureValue("")
                 .build();
     }
+
+
+
 }

@@ -3,8 +3,10 @@ package com.example.onlinelibrary.web;
 import com.example.onlinelibrary.domain.*;
 import com.example.onlinelibrary.persistence.UserDao;
 import com.example.onlinelibrary.services.BookService;
+import lombok.NonNull;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -32,6 +37,10 @@ public class MainController {
     private int numOfBooks = 0;
     private List<Book> lastSearchResult;
     private User user;
+    @Value("${application.robokassa.merchantlogin}")
+    private String merchantLogin;
+    @Value("${application.robokassa.merchantpass1}")
+    private String merchantPass1;
 
     @Autowired
     public MainController(BookService bookService) {
@@ -57,7 +66,8 @@ public class MainController {
             model.addAttribute("searchResult", new ArrayList<Book>());
         }
         model.addAttribute("currentPage", currentPage);
-        //Book book = new Book().getCurrencyCode()
+        model.addAttribute("MerchantLogin", merchantLogin);
+        //Book book = new Book().getSignatureValue()
         return "home";
     }
 
@@ -117,6 +127,7 @@ public class MainController {
             model.addAttribute("numOfBooks", numOfBooks);
             model.addAttribute("currentPage", currentPage);
             model.addAttribute("searchResult", updateBookStatus(result, user));
+            model.addAttribute("MerchantLogin", merchantLogin);
         }
 
         if (user != null) {
@@ -144,6 +155,7 @@ public class MainController {
         updateUser();
         model.addAttribute("username", "");
         model.addAttribute("roles", "");
+        model.addAttribute("MerchantLogin", merchantLogin);
         if (user != null) {
             model.addAttribute("username", user.getUsername());
             model.addAttribute("roles", user.getAuthorities().stream().map(Role::getAuthority).collect(joining(",")));
@@ -185,6 +197,30 @@ public class MainController {
         }
         log.info("book with id " + googleBookId + " removed from fav.");
         return "alert";
+    }
+
+    @GetMapping("/payment/result")
+    @ResponseBody
+    public String purchaseResult(
+            @RequestParam(value = "OutSum", required = false) String outSum,
+            @RequestParam(value = "InvId", required = false) String invId,
+            @RequestParam(value = "Shp_book", required = false) String gbookId,
+            @RequestParam(value = "Shp_user", required = false) String user,
+            @RequestParam(value = "SignatureValue", required = false) String signatureValue
+    ) {
+        //Shp_book=${book.getId()}&Shp_user=${username}"
+        log.info("Payment result: " + outSum + " " + invId + " " + signatureValue + " " + user + " " + gbookId);
+        return "OK" + invId;
+    }
+
+    @GetMapping("payment/success")
+    public String paymentSuccess() {
+        return "/";
+    }
+
+    @GetMapping("payment/fail")
+    public String paymentFail() {
+        return "error";
     }
 
     @GetMapping("/user/favorites")
@@ -244,12 +280,27 @@ public class MainController {
                         user.getFavoriteBooks().stream().anyMatch(f -> f.getGoogleId().equals(b.getId())));
                 b.setPurchased(
                         user.getPurchasedBooks().stream().anyMatch(f -> f.getGoogleId().equals(b.getId())));
+                b.setSignatureValue(generateSignature(b.getPrice(), user.getUsername(), b.getId()));
             })
                     .collect(Collectors.toList());
-            /*bookList = bookList.stream().peek(b -> b.setPurchased(
-                    user.getPurchasedBooks().stream().anyMatch(f -> f.getGoogleId().equals(b.getId()))))
-                    .collect(Collectors.toList());*/
         }
         return bookList;
+    }
+
+    private String generateSignature(Double price, String user, String id) {
+        String result = merchantLogin + ":" + price + "::" + merchantPass1 + ":Shp_book=" + id + ":Shp_user=" + user;
+        return stringToMd5(result);
+    }
+
+    private String stringToMd5(@NonNull String str) {
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        md.update(str.getBytes());
+        byte[] digest = md.digest();
+        return DatatypeConverter.printHexBinary(digest).toUpperCase();
     }
 }

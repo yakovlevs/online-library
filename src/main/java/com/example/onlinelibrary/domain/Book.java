@@ -30,4 +30,5 @@ public class Book {
     private boolean saleability;
     private Double price;
     private String currencyCode;
+    private String signatureValue;
 }
