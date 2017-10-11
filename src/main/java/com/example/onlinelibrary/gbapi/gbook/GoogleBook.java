@@ -10,6 +10,7 @@ public class GoogleBook {
     private String etag = "";
     private VolumeInfo volumeInfo = new VolumeInfo();
     private AccessInfo accessInfo = new AccessInfo();
+    private SaleInfo saleInfo = new SaleInfo();
 
     public void setId(String id) {
         if (id != null) {
@@ -32,6 +33,12 @@ public class GoogleBook {
     public void setAccessInfo(AccessInfo accessInfo) {
         if (accessInfo != null) {
             this.accessInfo = accessInfo;
+        }
+    }
+
+    public void setSaleInfo(SaleInfo saleInfo) {
+        if (saleInfo != null) {
+            this.saleInfo = saleInfo;
         }
     }
 }

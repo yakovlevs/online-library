@@ -21,23 +21,40 @@
                     </#if>>
                 </a>
             <#if (username??) && (username!="")>
-                <div id="fav-alert">
-                    <#if book.isFavorite()>
-                    <a id="remove-fav-button" class="btn btn-danger fav-btn center-block" name="${book.getId()}">
-                        <span class="glyphicon glyphicon-minus"></span>
-                        <form id="add_fav">
-                            <input id="csrf" name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}">
-                            <input id="googleBookId" name="googleBookId" type="hidden" value="${book.getId()}">
-                        </form>
-                    <#else>
-                    <a id="add-fav-button" class="btn btn-primary fav-btn center-block" name="${book.getId()}">
-                        <span class="glyphicon glyphicon-plus"></span>
-                        <form id="add_fav">
-                            <input id="csrf" name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}">
-                            <input id="googleBookId" name="googleBookId" type="hidden" value="${book.getId()}">
-                        </form>
-                    </#if>
-                </a>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div id="fav-alert">
+                            <#if book.isFavorite()>
+                            <a id="remove-fav-button" class="btn btn-danger fav-btn pull-right" name="${book.getId()}">
+                                <span class="glyphicon glyphicon-minus"></span>
+                                <form id="add_fav">
+                                    <input id="csrf" name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}">
+                                    <input id="googleBookId" name="googleBookId" type="hidden" value="${book.getId()}">
+                                </form>
+                            <#else>
+                            <a id="add-fav-button" class="btn btn-primary fav-btn pull-right" name="${book.getId()}">
+                                <span class="glyphicon glyphicon-plus"></span>
+                                <form id="add_fav">
+                                    <input id="csrf" name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}">
+                                    <input id="googleBookId" name="googleBookId" type="hidden" value="${book.getId()}">
+                                </form>
+                            </#if>
+                        </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <#if book.isPurchased()>
+                            <a id="buy-button" class="btn btn-primary pull-left disabled">Owner </a>
+                        <#else>
+                            <a id="buy-button" class="btn btn-primary pull-left">Buy
+                                <span class=""></span>
+                                <form id="buy-form">
+                                    <input id="csrf" name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}">
+                                    <input id="googleBookId" name="googleBookId" type="hidden" value="${book.getId()}">
+                                </form>
+                            </a>
+                        </#if>
+                    </div>
                 </div>
             </#if>
             </div>
@@ -92,6 +109,10 @@
                     ${categorie}<#if categorie?is_last>. <#else>, </#if>
                     </#list>
                     </p>
+                <#if book.isSaleability()>
+                    <p class="hide-description-overflow hide-title-overflow"><span
+                            class="text-primary">Price:</span> ${book.getPrice()}  ${book.getCurrencyCode()}</p>
+                </#if>
                     <p class="hide-description-overflow hide-title-overflow"><span
                             class="text-primary">Publisher:</span> ${book.getPublisher()}</p>
                     <p class="hide-description-overflow hide-title-overflow"><span

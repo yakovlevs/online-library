@@ -27,4 +27,7 @@ public class Book {
     private String webReaderLink;
     private boolean favorite;
     private boolean purchased;
+    private boolean saleability;
+    private Double price;
+    private String currencyCode;
 }

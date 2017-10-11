@@ -57,6 +57,7 @@ public class MainController {
             model.addAttribute("searchResult", new ArrayList<Book>());
         }
         model.addAttribute("currentPage", currentPage);
+        //Book book = new Book().getCurrencyCode()
         return "home";
     }
 

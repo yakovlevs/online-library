@@ -45,6 +45,9 @@ public class BookService {
                 .pdfLink(volume.getAccessInfo().getPdf().getDownloadLink())
                 .epubLink(volume.getAccessInfo().getEpub().getDownloadLink())
                 .webReaderLink(volume.getAccessInfo().getWebReaderLink())
+                .saleability(!volume.getSaleInfo().getSaleability().equals(""))
+                .price(volume.getSaleInfo().getRetailPrice().getAmount())
+                .currencyCode(volume.getSaleInfo().getRetailPrice().getCurrencyCode())
                 .build();
     }
 }

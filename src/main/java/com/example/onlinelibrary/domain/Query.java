@@ -24,7 +24,8 @@ public class Query {
                 "title,subtitle,authors,publisher,publishedDate," +
                 "description,pageCount,categories,averageRating," +
                 "language,industryIdentifiers,imageLinks(thumbnail))," +
-                "accessInfo(epub(downloadLink),pdf(downloadLink),webReaderLink))";
+                "accessInfo(epub(downloadLink),pdf(downloadLink),webReaderLink)," +
+                "saleInfo(saleability,retailPrice))";
         String result = "";
         if (request != null) result += "q=" + encodeToUtf8(request);
         if (language != null) result += "&langRestrict=" + language;

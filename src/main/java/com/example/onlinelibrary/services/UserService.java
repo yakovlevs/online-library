@@ -59,6 +59,7 @@ public class UserService implements UserDetailsService {
                             Arrays.asList(
                                     FavBook.builder().googleId("fbM1DwAAQBAJ").build(),
                                     FavBook.builder().googleId("twKQ7zpid2UC").build(),
+                                    FavBook.builder().googleId("c53vDQAAQBAJ").build(),
                                     FavBook.builder().googleId("eavbBQAAQBAJ").build(),
                                     FavBook.builder().googleId("5NomkK4EV68C").build())))
                     .purchasedBooks(new HashSet<>(
