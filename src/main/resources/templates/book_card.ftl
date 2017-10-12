@@ -125,7 +125,7 @@
                     <p class="hide-description-overflow hide-title-overflow"><span
                             class="text-primary">Published date:</span> ${book.getPublishedDate()}</p>
                     <p class="hide-description-overflow"><span
-                            class="text-primary">Page count:</span> ${book.getPageCount()}</p>
+                            class="text-primary">Page count:</span> ${book.getPageCount()?string.number}</p>
                     <p class="hide-title-overflow"><span
                             class="text-primary">Rating:</span> ${book.getAverageRating()}</p>
                     <p class="hide-title-overflow"><span

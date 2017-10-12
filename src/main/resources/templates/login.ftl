@@ -17,7 +17,7 @@
         col-md-6 col-md-offset-3
         col-lg-6 col-lg-offset-3
         ">
-            <div class="panel panel-primary" style="margin-top: 45px">
+            <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title">Login with Username and Password</h3>
                 </div>
