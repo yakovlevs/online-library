@@ -22,13 +22,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.csrf().ignoringAntMatchers("/payment/result", "/payment/success", "/payment/fail").and()
                 .authorizeRequests()
-                .antMatchers("/",
-                        "/home",
-                        "/payment/result",
-                        "payment/success",
-                        "payment/fail").permitAll()
+                .antMatchers("/", "/home"
+                ).permitAll()
                 .antMatchers("/user").authenticated()
                 //.anyRequest().authenticated()
                 .and()
