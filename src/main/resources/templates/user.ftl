@@ -15,7 +15,7 @@
     <div class="panel panel-default" style="margin-top: 16px">
         <div class="panel-body">
             <p class="lead">Hello, ${username}!</p>
-            <p>You are logged with username: ${username} and with roles: ${roles}</p>
+            <p>You are logged with role(s): ${roles}</p>
             <div class="row">
                 <div class="col-lg-1">
                     <a class="btn btn-primary" href="/">Home</a></div>
